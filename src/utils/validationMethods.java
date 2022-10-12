@@ -21,15 +21,12 @@ public class validationMethods {
      * Clean, validate and parse phone number property
      * @param phone - String of phone number to be validated
      * @return int of formatted and validated phone number or null if phone number is invalid
-     * @throws NumberFormatException if not starting with 0 and not 9 numbers
      */
     public String validatePhone(String phone) {
         String formattedPhone = cleanNumber(phone);
         if (isNumbersOnly(phone)) {
             if (formattedPhone.length() == 9 && formattedPhone.charAt(0) == 48) {
                 return formattedPhone;
-            } else {
-                throw new NumberFormatException("PHONE NUMBER FORMAT IS INVALID");
             }
         }
         return null;
@@ -40,7 +37,6 @@ public class validationMethods {
      *
      * @param str to validate
      * @return true if only english letters
-     * @throws IllegalArgumentException if String has numbers or special chars
      */
     public boolean isOnlyEnglishLetters(String str) {
         // ASCII letters "a" = 97, "z" = 122, "A" = 65, "Z" = 90, " " = 32
@@ -48,7 +44,7 @@ public class validationMethods {
         for (int i = 0; i < str.length(); i++) {
             int charValue = str.charAt(i);
             if (!((charValue >= 65 && charValue <= 90) || (charValue >= 97 && charValue <= 122) || charValue == 32)) {
-                throw new IllegalArgumentException("ONLY ENGLISH LETTERS ALLOWED");
+                return false;
             }
         }
         return true;
@@ -58,16 +54,14 @@ public class validationMethods {
      * Valid name is not null or empty and has no consecutive spaces
      *
      * @param str - String input to format
-     * @return String without consecutive spaces
-     * @throws IllegalArgumentException if String is empty
-     * @throws NullPointerException     if String is null
+     * @return String without consecutive spaces or null
      */
     public String validStringInput(String str) {
         String nameNoUselessSpaces = str.replaceAll("\\s+", " ").trim();
         if (nameNoUselessSpaces.length() > 0) {
             return nameNoUselessSpaces;
         } else {
-            throw new IllegalArgumentException("INVALID INPUT - empty string");
+           return null;
         }
     }
 
@@ -108,14 +102,13 @@ public class validationMethods {
      *
      * @param num - Number to be validated
      * @return true if string contains only numbers
-     * @throws IllegalArgumentException if containing anything but numbers (accepts and removes spaces and hyphens)
      */
     public boolean isNumbersOnly(String num) {
         String cleanNum = cleanNumber(num);
         for (int i = 0; i < cleanNum.length(); i++) {
             int charValue = cleanNum.charAt(i);
             if (!(charValue >= 48 && charValue <= 57)) {
-                throw new IllegalArgumentException("ONLY NUMBERS ALLOWED");
+                return false;
             }
         }
         return true;
