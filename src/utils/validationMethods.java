@@ -1,7 +1,8 @@
 package utils;
 
-import javax.naming.InvalidNameException;
-
+/**
+ * Class for methods used for validating contact object creation
+ */
 public class validationMethods {
 
     /**
