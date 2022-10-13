@@ -1,18 +1,20 @@
 package RunClasses;
 
-import utils.contact;
-import utils.setApp;
-import utils.phoneBookFunctions;
+import utils.*;
 
 public class Main extends setApp {
     public static void main(String[] args){
 
-        contact p1 = new contact();
-
-        phoneBookFunctions fun = new phoneBookFunctions();
         fun.printMenu();
-        int input = fun.enterInt();
-        System.out.println(input);
+        int menuInput = fun.enterMenuChoice();
+        if (menuInput == 1) {
+            Contact contact = fun.createContact();
+            fun.addContact(contact);
+            for (Contact c: contactsList) {
+                System.out.println(c.getName());
+                System.out.println(c.getPhoneNumber());
+            }
+        }
 
 
     }

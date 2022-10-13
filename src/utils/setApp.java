@@ -7,12 +7,15 @@ import java.util.Scanner;
 
 public class setApp {
 
+    public static final validationMethods validate = new validationMethods();
+    public static final phoneBookFunctions fun = new phoneBookFunctions();
+    public static final appTexts texts = new appTexts();
     Scanner scan = new Scanner(System.in);
     final Map<Integer, String> menu = generateMenu();
-    ArrayList<contact> contactsList = new ArrayList<>();
+    public static ArrayList<Contact> contactsList = new ArrayList<>();
 
-    private Map<Integer,String> generateMenu() {
-        Map<Integer,String> menu = new HashMap<>();
+    private Map<Integer, String> generateMenu() {
+        Map<Integer, String> menu = new HashMap<>();
         menu.put(1, "Add contact");
         menu.put(2, "Delete contact");
         menu.put(3, "Print all contacts");
