@@ -14,20 +14,20 @@ public class myPhoneBook extends PhoneBookBlueprint {
 
     @Override
     public Map<Integer, String> generatePhoneBookMenu() {
-            Map<Integer, String> menu = new HashMap<>();
-            menu.put(1, "Add contact");
-            menu.put(2, "Delete contact");
-            menu.put(3, "Print all contacts");
-            menu.put(4, "Search and print contact");
-            menu.put(5, "Sort by name alphabetically: A-Z and print");
-            menu.put(6, "Sort by phone - largest to smallest number");
-            menu.put(7, "Sort by name alphabetically: Z-A and print before and after");
-            menu.put(8, "Remove duplicates and print them");
-            menu.put(9, "Save phone book to a file");
-            menu.put(10, "Upload phone book from a file");
-            menu.put(11, "Exit");
+        Map<Integer, String> menu = new HashMap<>();
+        menu.put(1, "Add contact");
+        menu.put(2, "Delete contact");
+        menu.put(3, "Print all contacts");
+        menu.put(4, "Search and print contact");
+        menu.put(5, "Sort by name alphabetically: A-Z and print");
+        menu.put(6, "Sort by phone - largest to smallest number");
+        menu.put(7, "Sort by name alphabetically: Z-A and print before and after");
+        menu.put(8, "Remove duplicates and print them");
+        menu.put(9, "Save phone book to a file");
+        menu.put(10, "Upload phone book from a file");
+        menu.put(11, "Exit");
 
-            return menu;
+        return menu;
     }
 
     @Override
@@ -38,6 +38,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
     /**
      * Create contacts object with name and phone number
      * In this phone book number of name characters is limited to 20
+     *
      * @return Contact object with valid fields filled
      */
     @Override
@@ -52,9 +53,9 @@ public class myPhoneBook extends PhoneBookBlueprint {
                 success = true;
                 break;
             } catch (IllegalArgumentException iae) {
-                printInvalidInputWarn(i, true, true);
+                printErrorMessages(calculateMessageIndex(i, true, true));
             } catch (ArithmeticException ae) {
-                printInvalidInputWarn(i, false, true);
+                printErrorMessages(calculateMessageIndex(i, false, true));
             }
         }
 
@@ -66,13 +67,13 @@ public class myPhoneBook extends PhoneBookBlueprint {
                     contact.setPhoneNumber(phone);
                     return contact;
                 } catch (NumberFormatException nfe) {
-                    printInvalidInputWarn(i, true, false);
+                    printErrorMessages(calculateMessageIndex(i, false, false));
                 } catch (IllegalArgumentException iae) {
-                    printInvalidInputWarn(i, false, false);
+                    printErrorMessages(calculateMessageIndex(i, true, false));
                 }
             }
         }
-        System.err.println(texts.inputErrMsg);
+        printErrorMessages(7);
         return null;
     }
 
@@ -91,7 +92,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
 
     @Override // TODO better GUI
     public void printPhoneBook(ArrayList<Contact> listOfContacts) {
-        for (Contact contact: listOfContacts) {
+        for (Contact contact : listOfContacts) {
             System.out.println("Contact Name: " + contact.getName());
             System.out.println("Contact Phone Number: " + contact.getPhoneNumber());
             System.out.println("-------------------------");
@@ -120,40 +121,68 @@ public class myPhoneBook extends PhoneBookBlueprint {
     }
 
     /**
-     * Printing error text according to field of Contact object
-     * @param i Index of loop
-     * @param isLengthValid true if number of characters in field are as determined
-     * @param isNameField true if errors in name, false if errors in phone
+     * Printing error text according to message index
+     *
+     * @param messageIndex Index of message to print
+     *                     1 - Generic invalid input
+     *                     2 - Name length restriction
+     *                     3 - Phone format and length restriction
+     *                     4 - Last input chance
+     *                     5 - Name length + last chance
+     *                     6 - Phone format + last chance
+     *                     7 - Max tries
      */
-    public static void printInvalidInputWarn(int i, boolean isLengthValid, boolean isNameField) {
+    public static void printErrorMessages(int messageIndex) {  //TODO maybe move phoneBookAppMethods
+        switch (messageIndex) {
+            case 1 -> System.err.println(texts.invalidInputWarn);
+            case 2 -> System.err.println(texts.nameLengthWarn);
+            case 3 -> System.err.println(texts.phoneFormat);
+            case 4 -> System.err.println(texts.lastInvalidInputWarn);
+            case 5 -> System.err.println(texts.nameLengthWarn + " - " + texts.lastInvalidInputWarn);
+            case 6 -> System.err.println(texts.phoneFormat + " - " + texts.lastInvalidInputWarn);
+            case 7 -> System.err.println(texts.inputErrMsg);
+        }
+    }
+
+    public static int calculateMessageIndex(int i, boolean isLengthValid, boolean isNameField) {
         if (i == 0) {
             if (isNameField) {
                 if (isLengthValid) {
-                    System.err.println(texts.invalidInputWarn);
+                    //  System.err.println(texts.invalidInputWarn);
+                    return 1;
                 } else {
-                    System.err.println(texts.nameLengthWarn);
+                    //  System.err.println(texts.nameLengthWarn);
+                    return 2;
                 }
             } else {
                 if (isLengthValid) {
-                    System.err.println(texts.invalidInputWarn);
+                    //  System.err.println(texts.invalidInputWarn);
+                    return 1;
                 } else {
-                    System.err.println(texts.phoneFormat);
+                    //  System.err.println(texts.phoneFormat);
+                    return 3;
                 }
             }
         } else if (i == 1) {
             if (isNameField) {
                 if (isLengthValid) {
-                    System.err.println(texts.lastInvalidInputWarn);
+                    //  System.err.println(texts.lastInvalidInputWarn);
+                    return 4;
                 } else {
-                    System.err.println(texts.nameLengthWarn + " - " + texts.lastInvalidInputWarn);
+                    //  System.err.println(texts.nameLengthWarn + " - " + texts.lastInvalidInputWarn);
+                    return 5;
                 }
             } else {
                 if (isLengthValid) {
-                    System.err.println(texts.lastInvalidInputWarn);
+                    //  System.err.println(texts.lastInvalidInputWarn);
+                    return 4;
                 } else {
-                    System.err.println(texts.phoneFormat + " - " + texts.lastInvalidInputWarn);
+                    //  System.err.println(texts.phoneFormat + " - " + texts.lastInvalidInputWarn);
+                    return 6;
                 }
             }
+        } else {
+            return 1;
         }
     }
 }

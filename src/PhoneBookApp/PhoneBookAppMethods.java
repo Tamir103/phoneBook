@@ -46,9 +46,9 @@ public class PhoneBookAppMethods {
                     return inputInt;
                 }
             }
-           myPhoneBook.printInvalidInputWarn(i, true, true);
+           myPhoneBook.printErrorMessages(1);
         }
-        System.err.println(texts.inputErrMsg);
+        myPhoneBook.printErrorMessages(5);
         return 0;
     }
 
