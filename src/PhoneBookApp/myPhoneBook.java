@@ -95,7 +95,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
         for (Contact contact : listOfContacts) {
             System.out.println("Contact Name: " + contact.getName());
             System.out.println("Contact Phone Number: " + contact.getPhoneNumber());
-            System.out.println("-------------------------");
+            System.out.println("---------------------------");
         }
 
     }
