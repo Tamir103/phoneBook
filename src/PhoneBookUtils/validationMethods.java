@@ -1,4 +1,4 @@
-package utils;
+package PhoneBookUtils;
 
 import java.util.Map;
 
@@ -8,57 +8,16 @@ import java.util.Map;
 public class validationMethods {
 
     /**
-     * Clean and validate name property
-     * @param name - Name to be validated
-     * @return cleaned and validated name or null if name is invalid
+     * Clean and validate String contains only english letters using removeWhiteSpaces and isOnlyEnglish letters methods
+     * @param str - String to be validated
+     * @return cleaned and validated string or null if string is invalid
      */
-    public String validateName(String name) {
-        String cleanName = cleanStringInput(name);
-        if (isOnlyEnglishLetters(name)) {
-            return cleanName;
+    public String validateLettersOnly(String str) {
+        String cleanStr = removeWhiteSpaces(str);
+        if (isOnlyEnglishLetters(str)) {
+            return cleanStr;
         }
         return null;
-    }
-
-    /**
-     * Clean, validate and parse phone number property
-     * @param phone - String of phone number to be validated
-     * @return formatted and validated phone number or null if phone number is invalid
-     */
-    public String validatePhone(String phone) {
-        String formattedPhone = cleanNumber(phone);
-        if (isNumbersOnly(formattedPhone)) {
-            if (phoneNumType(formattedPhone) == null) {
-                return null;
-            } else if (phoneNumType(formattedPhone).equals("cellphone")) {
-                if (formattedPhone.length() == 10) {
-                    return formattedPhone;
-                }
-            } else if (phoneNumType(formattedPhone).equals("landline")) {
-                if (formattedPhone.length() == 9) {
-                    return formattedPhone;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Determines phone number type
-     * @param phone - Phone number
-     * @return cellphone, landline or null
-     */
-    public String phoneNumType(String phone) {
-    // ASCII for 0 = 48, 5 = 53
-        if (phone.charAt(0) == 48) {
-            if (phone.charAt(1) == 53) {
-                return "cellphone";
-            } else {
-                return "landline";
-            }
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -69,7 +28,7 @@ public class validationMethods {
      */
     public boolean isOnlyEnglishLetters(String str) {
         // ASCII letters "a" = 97, "z" = 122, "A" = 65, "Z" = 90, " " = 32
-        String validName = cleanStringInput(str);
+        String validName = removeWhiteSpaces(str);
         for (int i = 0; i < validName.length(); i++) {
             int charValue = validName.charAt(i);
             if (!((charValue >= 65 && charValue <= 90) || (charValue >= 97 && charValue <= 122) || charValue == 32)) {
@@ -85,7 +44,7 @@ public class validationMethods {
      * @param str - String input to format
      * @return String without consecutive spaces or null
      */
-    public String cleanStringInput(String str) {
+    public String removeWhiteSpaces(String str) {
         String nameNoUselessSpaces = str.replaceAll("\\s+", " ").trim();
         if (nameNoUselessSpaces.length() > 0) {
             return nameNoUselessSpaces;
@@ -116,7 +75,7 @@ public class validationMethods {
      * @return Cleaned number string
      */
     public String cleanNumber(String num) {
-        String validName = cleanStringInput(num);
+        String validName = removeWhiteSpaces(num);
         try {
             for (int i = 0; i < validName.length(); i++) {
                 int charValue = validName.charAt(i);
