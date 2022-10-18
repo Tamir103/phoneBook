@@ -98,7 +98,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
                 }
             }
         }
-        return null;
+        return listOfContacts;
     }
 
     @Override
