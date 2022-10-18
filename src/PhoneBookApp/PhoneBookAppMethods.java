@@ -1,11 +1,14 @@
 package PhoneBookApp;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static PhoneBookApp.setApp.*;
 
 public class PhoneBookAppMethods {
     public static void printMenu() {
+        HashMap<String, String> textsMap = texts.generateTexts();
+        System.out.println(textsMap.get("welcome"));
         System.out.println(texts.welcome);
         for (Map.Entry<Integer, String> entry : menu.entrySet()) {
             if (entry.getKey() < 10) {
