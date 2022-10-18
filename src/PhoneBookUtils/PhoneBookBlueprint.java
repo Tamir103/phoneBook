@@ -17,7 +17,7 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
 
     public abstract ArrayList<Contact> addContact(Contact contact, ArrayList<Contact> listOfContacts);
 
-    public abstract ArrayList<Contact> removeContact(Contact contact);
+    public abstract ArrayList<Contact> removeContact(ArrayList<Contact> listOfConntacts, String nameOrPhone, boolean removeAll);
 
     public abstract void printPhoneBook(ArrayList<Contact> listOfContacts);
 

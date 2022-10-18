@@ -85,8 +85,19 @@ public class myPhoneBook extends PhoneBookBlueprint {
     }
 
     @Override
-    public ArrayList<Contact> removeContact(Contact contact) {
-
+    public ArrayList<Contact> removeContact(ArrayList<Contact> listOfContacts, String nameOrPhone, boolean removeAll) {
+        for (Contact c : listOfContacts) {
+            if (removeAll) {
+                if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equals(nameOrPhone)) {
+                    listOfContacts.remove(c);
+                }
+            } else {
+                if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equalsIgnoreCase(nameOrPhone)){
+                    listOfContacts.remove(c);
+                    break;
+                }
+            }
+        }
         return null;
     }
 
