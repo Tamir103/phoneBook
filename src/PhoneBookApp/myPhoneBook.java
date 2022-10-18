@@ -2,16 +2,38 @@ package PhoneBookApp;
 
 import PhoneBookUtils.Contact;
 import PhoneBookUtils.PhoneBookBlueprint;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static PhoneBookApp.setApp.texts;
-import static PhoneBookApp.PhoneBookAppMethods.*;
 
 public class myPhoneBook extends PhoneBookBlueprint {
 
+    public static HashMap<String, String> textsMap = generateTexts();
+    //TODO javadoc this
+    public static HashMap<String, String> generateTexts(/*String jsonPath*/) {
+        try {
+            // create Gson instance
+            Gson gson = new Gson();
+            HashMap map;
+
+            // create a reader
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("./Texts.json"));
+
+            // convert JSON file to map
+            map = gson.fromJson(bufferedReader, HashMap.class);
+
+            bufferedReader.close();
+            return map;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public Map<Integer, String> generatePhoneBookMenu() {
         Map<Integer, String> menu = new HashMap<>();
@@ -45,9 +67,9 @@ public class myPhoneBook extends PhoneBookBlueprint {
     public Contact createContact() {
         boolean success = false;
         Contact contact = new Contact();
-        System.out.println(texts.enterName);
+        System.out.println(textsMap.get("enterName"));
         for (int i = 0; i < 3; i++) {
-            String name = enterString();
+            String name = PhoneBookAppMethods.enterString();
             try {
                 contact.setName(name);
                 success = true;
@@ -60,9 +82,9 @@ public class myPhoneBook extends PhoneBookBlueprint {
         }
 
         if (success) {
-            System.out.println(texts.enterPhone);
+            System.out.println(appTexts.textsMap.get("enterPhone"));
             for (int i = 0; i < 3; i++) {
-                String phone = enterString();
+                String phone = PhoneBookAppMethods.enterString();
                 try {
                     contact.setPhoneNumber(phone);
                     return contact;
@@ -156,13 +178,14 @@ public class myPhoneBook extends PhoneBookBlueprint {
      */
     public static void printErrorMessages(int messageIndex) {  //TODO maybe move phoneBookAppMethods
         switch (messageIndex) {
-            case 1 -> System.err.println(texts.invalidInputWarn);
-            case 2 -> System.err.println(texts.nameLengthWarn);
-            case 3 -> System.err.println(texts.phoneFormat);
-            case 4 -> System.err.println(texts.lastInvalidInputWarn);
-            case 5 -> System.err.println(texts.nameLengthWarn + " - " + texts.lastInvalidInputWarn);
-            case 6 -> System.err.println(texts.phoneFormat + " - " + texts.lastInvalidInputWarn);
-            case 7 -> System.err.println(texts.inputErrMsg);
+            case 0 -> System.out.println();
+            case 1 -> System.err.println(textsMap.get("invalidInputWarn"));
+            case 2 -> System.err.println(textsMap.get("nameLengthWarn"));
+            case 3 -> System.err.println(textsMap.get("phoneFormat"));
+            case 4 -> System.err.println(textsMap.get("lastInvalidInputWarn"));
+            case 5 -> System.err.println(textsMap.get("nameLengthWarn") + " - " + textsMap.get("lastInvalidInputWarn"));
+            case 6 -> System.err.println(textsMap.get("phoneFormat") + " - " + textsMap.get("lastInvalidInputWarn"));
+            case 7 -> System.err.println(textsMap.get("inputErrMsg"));
         }
     }
 
@@ -203,6 +226,8 @@ public class myPhoneBook extends PhoneBookBlueprint {
                     return 6;
                 }
             }
+        } else if (i == 2) {
+            return 0;
         } else {
             return 1;
         }

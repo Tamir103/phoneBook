@@ -1,16 +1,12 @@
 package PhoneBookApp;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import static PhoneBookApp.setApp.*;
 
 public class PhoneBookAppMethods {
     public static void printMenu() {
-        HashMap<String, String> textsMap = texts.generateTexts();
-        System.out.println(textsMap.get("welcome"));
-        System.out.println(texts.welcome);
-        for (Map.Entry<Integer, String> entry : menu.entrySet()) {
+        System.out.println(appTexts.textsMap.get("welcome"));
+        for (Map.Entry<Integer, String> entry : setApp.menu.entrySet()) {
             if (entry.getKey() < 10) {
                 System.out.print(entry.getKey());
                 printMenuDots(8);
@@ -22,7 +18,7 @@ public class PhoneBookAppMethods {
             }
         }
         System.out.println();
-        System.out.println(texts.menuInstructions);
+        System.out.println(appTexts.textsMap.get("menuInstructions"));
     }
 
     public static void printMenuDots(int amount) {
@@ -38,7 +34,7 @@ public class PhoneBookAppMethods {
     }
 
     public static String enterString() {
-        return scan.nextLine();
+        return setApp.scan.nextLine();
     }
 
     /**
@@ -49,9 +45,9 @@ public class PhoneBookAppMethods {
     public static int enterMenuChoice() {
         for (int i = 0; i < 3; i++) {
             String input = enterString();
-            if (validate.isNumbersOnly(input)) {
+            if (validationMethods.isNumbersOnly(input)) {
                 int inputInt = Integer.parseInt(input);
-                if (validate.isItemNumValid(inputInt, menu)) {
+                if (validationMethods.isItemNumValid(inputInt, setApp.menu)) {
                     return inputInt;
                 }
             }
@@ -75,13 +71,13 @@ public class PhoneBookAppMethods {
      */
     public static void printErrorMessages(int messageIndex) {
         switch (messageIndex) {
-            case 1 -> System.err.println(texts.invalidInputWarn);
-            case 2 -> System.err.println(texts.nameLengthWarn);
-            case 3 -> System.err.println(texts.phoneFormat);
-            case 4 -> System.err.println(texts.lastInvalidInputWarn);
-            case 5 -> System.err.println(texts.nameLengthWarn + " - " + texts.lastInvalidInputWarn);
-            case 6 -> System.err.println(texts.phoneFormat + " - " + texts.lastInvalidInputWarn);
-            case 7 -> System.err.println(texts.inputErrMsg);
+            case 1 -> System.err.println(appTexts.textsMap.get("invalidInputWarn"));
+            case 2 -> System.err.println(appTexts.textsMap.get("nameLengthWarn"));
+            case 3 -> System.err.println(appTexts.textsMap.get("phoneFormat"));
+            case 4 -> System.err.println(appTexts.textsMap.get("lastInvalidInputWarn"));
+            case 5 -> System.err.println(appTexts.textsMap.get("nameLengthWarn") + " - " + appTexts.textsMap.get("lastInvalidInputWarn"));
+            case 6 -> System.err.println(appTexts.textsMap.get("phoneFormat") + " - " + appTexts.textsMap.get("lastInvalidInputWarn"));
+            case 7 -> System.err.println(appTexts.textsMap.get("inputErrMsg"));
         }
     }
 

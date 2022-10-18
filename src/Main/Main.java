@@ -25,7 +25,6 @@ public class Main extends setApp {
     public static void main(String[] args) {
         ArrayList<Contact> testList = generateTestList();
 
-        texts.generateTexts();
         boolean exit = false;
         while (!exit) {
             fun.printMenu();
@@ -46,7 +45,7 @@ public class Main extends setApp {
                     myPhoneBook.printPhoneBook(/*contactsList*/ testList);
                     break;
                 case 11:
-                    System.out.println(texts.exit);
+                    System.out.println();
                     exit = true;
                     break;
             }
