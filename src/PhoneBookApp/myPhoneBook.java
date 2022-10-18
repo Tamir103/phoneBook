@@ -90,7 +90,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
         return null;
     }
 
-    @Override // TODO better GUI
+    @Override
     public void printPhoneBook(ArrayList<Contact> listOfContacts) {
         for (Contact contact : listOfContacts) {
             System.out.println("Contact Name: " + contact.getName());
