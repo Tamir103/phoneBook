@@ -49,7 +49,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
         for (int i = 0; i < 3; i++) {
             String name = enterString();
             try {
-                contact.setName(name, 20);
+                contact.setName(name);
                 success = true;
                 break;
             } catch (IllegalArgumentException iae) {
@@ -103,12 +103,23 @@ public class myPhoneBook extends PhoneBookBlueprint {
 
     @Override
     public void printPhoneBook(ArrayList<Contact> listOfContacts) {
+        PhoneBookAppMethods.printFrame(37);
+        System.out.println("CONTACTS: ");
         for (Contact contact : listOfContacts) {
-            System.out.println("Contact Name: " + contact.getName());
-            System.out.println("Contact Phone Number: " + contact.getPhoneNumber());
-            System.out.println("---------------------------");
+            System.out.print("| ");
+            System.out.print(contact.getName());
+            int dotAmount = 25 - contact.getName().length();
+            PhoneBookAppMethods.printMenuDots(dotAmount);
+            System.out.print(contact.getPhoneNumber());
+            int totalLineLength = 25 + contact.getPhoneNumber().length();
+            if (totalLineLength == 35) {
+                System.out.print("|");
+            } else {
+                System.out.print(" |");
+            }
+            System.out.println();
         }
-
+        PhoneBookAppMethods.printFrame(37);
     }
 
     @Override

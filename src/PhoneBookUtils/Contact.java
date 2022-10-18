@@ -10,12 +10,13 @@ public class Contact {
 
     /**
      * Setting contact name and validating the use of english letters
-     *
+     * In this case name is limited to 20 characters
      * @param name - set contact name
      * @throws IllegalArgumentException if input invalid
      */
-    public void setName(String name, int numOfCharsLimit) {
-        String validatedName = validateName(name, numOfCharsLimit);
+    public void setName(String name) {
+        int charLimit = 20;
+        String validatedName = validateName(name, charLimit);
         if (!validatedName.equals("2")) {
             if (!validatedName.equals("1")) {
                 this.name = validatedName;

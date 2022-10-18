@@ -27,6 +27,12 @@ public class PhoneBookAppMethods {
             System.out.print(".");
         }
     }
+    public static void printFrame(int amount) {
+        for (int i = 0; i < amount; i++) {
+            System.out.print("~");
+        }
+        System.out.println();
+    }
 
     public static String enterString() {
         return scan.nextLine();
