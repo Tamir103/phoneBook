@@ -11,7 +11,7 @@ public class Main extends setApp {
         Contact c1 = new Contact();
         Contact c2 = new Contact();
         Contact c3 = new Contact();
-        c1.setName("Tuvia the cate");
+        c1.setName("Tuvia the cat");
         c1.setPhoneNumber("0544444444");
         c2.setName("Zen the dog");
         c2.setPhoneNumber("089999999");
