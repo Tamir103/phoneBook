@@ -22,6 +22,7 @@ public class Main extends setApp {
         list.add(c3);
         return list;
     }
+
     public static void main(String[] args) {
         ArrayList<Contact> testList = generateTestList();
 
@@ -40,7 +41,7 @@ public class Main extends setApp {
                     }
                     break;
                 case 2:
-                    break;
+                   break;
                 case 3:
                     myPhoneBook.printPhoneBook(/*contactsList*/ testList);
                     break;
