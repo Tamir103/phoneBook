@@ -45,9 +45,11 @@ public class Main extends setApp {
                    break;
                 case 3:
                     myPhoneBook.printPhoneBook(/*contactsList*/ testList);
+                    break;
                 case 11:
                     System.out.println(texts.exit);
                     exit = true;
+                    break;
             }
         }
     }
