@@ -19,17 +19,12 @@ public class Main extends setApp {
         c2.setPhoneNumber("089999999");
         c3.setName("Osho is also a dog");
         c3.setPhoneNumber("0522222222");
-        c4.setName("tuvia the cat");
-        c4.setPhoneNumber("0544444444");
-        c5.setName("Tuvia the cat");
-        c5.setPhoneNumber("098765432");
         list.add(c1);
         list.add(c2);
         list.add(c3);
-        list.add(c4);
-        list.add(c5);
         return list;
     }
+
     public static void main(String[] args) {
         ArrayList<Contact> testList = generateTestList();
 
@@ -38,7 +33,7 @@ public class Main extends setApp {
             fun.printMenu();
             int menuInput = fun.enterMenuChoice();
             switch (menuInput) {
-                case 1 -> {
+                case 1:
                     Contact contact = myPhoneBook.createContact();
                     int listSizeBeforeAdd = contactsList.size();
                     contactsList = myPhoneBook.addContact(contact, contactsList);
@@ -46,16 +41,13 @@ public class Main extends setApp {
                     if (listSizeBeforeAdd == listSizeAfterAdd || contact == null) {
                         exit = true;
                     }
-                }
-                case 2 -> {
-                    String nameOrPhone = fun.enterString();
-                    myPhoneBook.removeContact(testList, nameOrPhone, false);
-                }
-                case 3 -> myPhoneBook.printPhoneBook(/*contactsList*/ testList);
-                case 11 -> {
+                case 2:
+                   break;
+                case 3:
+                    myPhoneBook.printPhoneBook(/*contactsList*/ testList);
+                case 11:
                     System.out.println(texts.exit);
                     exit = true;
-                }
             }
         }
     }
