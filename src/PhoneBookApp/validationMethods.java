@@ -112,4 +112,8 @@ public class validationMethods {
     public static boolean isItemNumValid(int num, Map map) {
         return num <= map.size() && num > 0;
     }
+
+    public static boolean validateYorN(String input) {
+        return input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("N");
+    }
 }

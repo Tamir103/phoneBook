@@ -21,7 +21,7 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
 
     public abstract void printPhoneBook(ArrayList<Contact> listOfContacts);
 
-    public abstract Contact findContact(String contactName);
+    public abstract ArrayList<Contact> findContact(ArrayList<Contact> listOfContacts, String contactName);
 
     private Comparator<Contact> compareByName = (Contact o1, Contact o2) -> o1.getName().compareTo(o2.getName());
     private Comparator<Contact> compareByPhone = (Contact o1, Contact o2) -> o1.getPhoneNumber().compareTo(o2.getPhoneNumber());

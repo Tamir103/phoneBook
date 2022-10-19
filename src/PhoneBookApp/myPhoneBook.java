@@ -15,6 +15,7 @@ import java.util.Map;
 public class myPhoneBook extends PhoneBookBlueprint {
 
     public static HashMap<String, String> textsMap = generateTexts();
+
     //TODO javadoc this
     public static HashMap<String, String> generateTexts(/*String jsonPath*/) {
         try {
@@ -34,6 +35,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public Map<Integer, String> generatePhoneBookMenu() {
         Map<Integer, String> menu = new HashMap<>();
@@ -69,33 +71,33 @@ public class myPhoneBook extends PhoneBookBlueprint {
         Contact contact = new Contact();
         System.out.println(textsMap.get("enterName"));
         for (int i = 0; i < 3; i++) {
-            String name = PhoneBookAppMethods.enterString();
+            String name = setApp.scan.nextLine();
             try {
                 contact.setName(name);
                 success = true;
                 break;
             } catch (IllegalArgumentException iae) {
-                printErrorMessages(calculateMessageIndex(i, true, true));
+                PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, true, true));
             } catch (ArithmeticException ae) {
-                printErrorMessages(calculateMessageIndex(i, false, true));
+                PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, false, true));
             }
         }
 
         if (success) {
             System.out.println(appTexts.textsMap.get("enterPhone"));
             for (int i = 0; i < 3; i++) {
-                String phone = PhoneBookAppMethods.enterString();
+                String phone = setApp.scan.nextLine();
                 try {
                     contact.setPhoneNumber(phone);
                     return contact;
                 } catch (NumberFormatException nfe) {
-                    printErrorMessages(calculateMessageIndex(i, false, false));
+                    PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, false, false));
                 } catch (IllegalArgumentException iae) {
-                    printErrorMessages(calculateMessageIndex(i, true, false));
+                    PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, true, false));
                 }
             }
         }
-        printErrorMessages(7);
+        PhoneBookAppMethods.printErrorMessages(7);
         return null;
     }
 
@@ -106,21 +108,62 @@ public class myPhoneBook extends PhoneBookBlueprint {
 
     }
 
+    // TODO use search method
     @Override
     public ArrayList<Contact> removeContact(ArrayList<Contact> listOfContacts, String nameOrPhone, boolean removeAll) {
-        for (Contact c : listOfContacts) {
+        ArrayList<Contact> inMethodList = findContact(listOfContacts, nameOrPhone);
+        if (PhoneBookAppMethods.isListEmpty(inMethodList)) {
+            if (removeAll) {
+                ArrayList<Contact> foundList  = new ArrayList<>();
+                Contact[] contactsArr = new Contact[listOfContacts.size()];
+                for (int i = 0; i < listOfContacts.size(); i++) {
+                    contactsArr[i] = listOfContacts.get(i);
+                }
+
+     /*   for (Contact c : listOfContacts) {
             if (removeAll) {
                 if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equals(nameOrPhone)) {
                     listOfContacts.remove(c);
                 }
             } else {
-                if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equalsIgnoreCase(nameOrPhone)){
+                if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equalsIgnoreCase(nameOrPhone)) {
                     listOfContacts.remove(c);
                     break;
                 }
             }
+        } */
+
+                for (int i = 0; i < contactsArr.length; i++) {
+                    if (contactsArr[i].getName().equalsIgnoreCase(nameOrPhone) || contactsArr[i].getPhoneNumber().equals(nameOrPhone)) {
+                        contactsArr[i] = null;
+                    }
+                }
+                for (Contact contact : contactsArr) {
+                    if (contact != null) {
+                        inMethodList.add(contact);
+                    }
+                }
+                return inMethodList;
+            } else {
+                for (Contact c : listOfContacts) {
+                    if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equalsIgnoreCase(nameOrPhone)) {
+                        listOfContacts.remove(c);
+                        break;
+                    }
+                }
+                return listOfContacts;
+            }
+        } else {
+            return listOfContacts;
         }
-        return listOfContacts;
+    }
+    public void printContact(Contact c) {
+        String name = c.getName();
+        String phone = c.getPhoneNumber();
+        int dotAmount = 25 - name.length();
+        System.out.print(name);
+        PhoneBookAppMethods.printMenuDots(dotAmount);
+        System.out.print(phone);
     }
 
     @Override
@@ -129,10 +172,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
         System.out.println("CONTACTS: ");
         for (Contact contact : listOfContacts) {
             System.out.print("| ");
-            System.out.print(contact.getName());
-            int dotAmount = 25 - contact.getName().length();
-            PhoneBookAppMethods.printMenuDots(dotAmount);
-            System.out.print(contact.getPhoneNumber());
+            printContact(contact);
             int totalLineLength = 25 + contact.getPhoneNumber().length();
             if (totalLineLength == 35) {
                 System.out.print("|");
@@ -144,9 +184,16 @@ public class myPhoneBook extends PhoneBookBlueprint {
         PhoneBookAppMethods.printFrame(37);
     }
 
+    // TODO if there is time, use contains to find partial names
     @Override
-    public Contact findContact(String contactName) {
-        return null;
+    public ArrayList<Contact> findContact(ArrayList<Contact> listOfContacts, String contactName) {
+        ArrayList<Contact> contactsFound = new ArrayList<>();
+        for (Contact c : listOfContacts) {
+            if (c.getName().equalsIgnoreCase(contactName)) {
+                contactsFound.add(c);
+            }
+        }
+        return contactsFound;
     }
 
     @Override
@@ -164,72 +211,4 @@ public class myPhoneBook extends PhoneBookBlueprint {
         return 0;
     }
 
-    /**
-     * Printing error text according to message index
-     *
-     * @param messageIndex Index of message to print
-     *                     1 - Generic invalid input
-     *                     2 - Name length restriction
-     *                     3 - Phone format and length restriction
-     *                     4 - Last input chance
-     *                     5 - Name length + last chance
-     *                     6 - Phone format + last chance
-     *                     7 - Max tries
-     */
-    public static void printErrorMessages(int messageIndex) {  //TODO maybe move phoneBookAppMethods
-        switch (messageIndex) {
-            case 0 -> System.out.println();
-            case 1 -> System.err.println(textsMap.get("invalidInputWarn"));
-            case 2 -> System.err.println(textsMap.get("nameLengthWarn"));
-            case 3 -> System.err.println(textsMap.get("phoneFormat"));
-            case 4 -> System.err.println(textsMap.get("lastInvalidInputWarn"));
-            case 5 -> System.err.println(textsMap.get("nameLengthWarn") + " - " + textsMap.get("lastInvalidInputWarn"));
-            case 6 -> System.err.println(textsMap.get("phoneFormat") + " - " + textsMap.get("lastInvalidInputWarn"));
-            case 7 -> System.err.println(textsMap.get("inputErrMsg"));
-        }
-    }
-
-    public static int calculateMessageIndex(int i, boolean isLengthValid, boolean isNameField) {
-        if (i == 0) {
-            if (isNameField) {
-                if (isLengthValid) {
-                    //  System.err.println(texts.invalidInputWarn);
-                    return 1;
-                } else {
-                    //  System.err.println(texts.nameLengthWarn);
-                    return 2;
-                }
-            } else {
-                if (isLengthValid) {
-                    //  System.err.println(texts.invalidInputWarn);
-                    return 1;
-                } else {
-                    //  System.err.println(texts.phoneFormat);
-                    return 3;
-                }
-            }
-        } else if (i == 1) {
-            if (isNameField) {
-                if (isLengthValid) {
-                    //  System.err.println(texts.lastInvalidInputWarn);
-                    return 4;
-                } else {
-                    //  System.err.println(texts.nameLengthWarn + " - " + texts.lastInvalidInputWarn);
-                    return 5;
-                }
-            } else {
-                if (isLengthValid) {
-                    //  System.err.println(texts.lastInvalidInputWarn);
-                    return 4;
-                } else {
-                    //  System.err.println(texts.phoneFormat + " - " + texts.lastInvalidInputWarn);
-                    return 6;
-                }
-            }
-        } else if (i == 2) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
 }
