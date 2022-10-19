@@ -10,6 +10,5 @@ public class appTexts {
     public String nameLengthWarn = "Name is limited to 20 characters";
     public String enterPhone = "Enter contact phone number: ";
     public String phoneFormat = "Phone number should have 9 numbers and begin with 0 for landline or 05 for cellphone";
-    public String contactToRemove = "Enter name or phone number of contact you like to remove:";
     public String exit = "Thank you for using the PhoneBook Application - GOODBYE";
 }
