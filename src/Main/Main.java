@@ -46,7 +46,7 @@ public class Main extends setApp {
                     myPhoneBook.printPhoneBook(/*contactsList*/ testList);
                     break;
                 case 11:
-                    System.out.println(texts.exit);
+                    System.out.println();
                     exit = true;
                     break;
             }

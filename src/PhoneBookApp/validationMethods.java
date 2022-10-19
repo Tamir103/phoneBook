@@ -1,4 +1,4 @@
-package PhoneBookUtils;
+package PhoneBookApp;
 
 import java.util.Map;
 
@@ -44,7 +44,7 @@ public class validationMethods {
      * @param str - String input to format
      * @return String without consecutive spaces or null
      */
-    public String removeWhiteSpaces(String str) {
+    public static String removeWhiteSpaces(String str) {
         String nameNoUselessSpaces = str.replaceAll("\\s+", " ").trim();
         if (nameNoUselessSpaces.length() > 0) {
             return nameNoUselessSpaces;
@@ -59,7 +59,7 @@ public class validationMethods {
      * @param hyphenedStr String with hyphen
      * @return String without hyphen
      */
-    public String removeHyphen(String hyphenedStr) {
+    public static String removeHyphen(String hyphenedStr) {
         String[] splittedStr = hyphenedStr.split("[- +]");
         String result = "";
         for (String s : splittedStr) {
@@ -74,7 +74,7 @@ public class validationMethods {
      * @param num - String numbers to be cleaned
      * @return Cleaned number string
      */
-    public String cleanNumber(String num) {
+    public static String cleanNumber(String num) {
         String validName = removeWhiteSpaces(num);
         try {
             for (int i = 0; i < validName.length(); i++) {
@@ -94,7 +94,7 @@ public class validationMethods {
      * @param num - Number to be validated
      * @return true if string contains only numbers
      */
-    public boolean isNumbersOnly(String num) {
+    public static boolean isNumbersOnly(String num) {
         String cleanNum = cleanNumber(num);
         try {
             for (int i = 0; i < cleanNum.length(); i++) {
@@ -109,7 +109,7 @@ public class validationMethods {
         return true;
     }
 
-    public boolean isItemNumValid(int num, Map map) {
+    public static boolean isItemNumValid(int num, Map map) {
         return num <= map.size() && num > 0;
     }
 }
