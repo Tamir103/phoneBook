@@ -41,6 +41,7 @@ public class Main extends setApp {
                     if (listSizeBeforeAdd == listSizeAfterAdd || contact == null) {
                         exit = true;
                     }
+                    break;
                 case 2:
                    break;
                 case 3:
