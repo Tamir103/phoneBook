@@ -108,11 +108,17 @@ public class myPhoneBook extends PhoneBookBlueprint {
 
     }
 
+    static boolean compareContactDetails(Contact c, String nameOrPhone) {
+        if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equals(nameOrPhone)) {
+            return true;
+        }
+        return false;
+    }
     // TODO use search method
     @Override
     public ArrayList<Contact> removeContact(ArrayList<Contact> listOfContacts, String nameOrPhone, boolean removeAll) {
         ArrayList<Contact> inMethodList = findContact(listOfContacts, nameOrPhone);
-        if (PhoneBookAppMethods.isListEmpty(inMethodList)) {
+        if (!PhoneBookAppMethods.isListEmpty(inMethodList)) {
             if (removeAll) {
                 ArrayList<Contact> foundList  = new ArrayList<>();
                 Contact[] contactsArr = new Contact[listOfContacts.size()];
@@ -134,19 +140,19 @@ public class myPhoneBook extends PhoneBookBlueprint {
         } */
 
                 for (int i = 0; i < contactsArr.length; i++) {
-                    if (contactsArr[i].getName().equalsIgnoreCase(nameOrPhone) || contactsArr[i].getPhoneNumber().equals(nameOrPhone)) {
+                    if (compareContactDetails(contactsArr[i], nameOrPhone)) {
                         contactsArr[i] = null;
                     }
                 }
                 for (Contact contact : contactsArr) {
                     if (contact != null) {
-                        inMethodList.add(contact);
+                        foundList.add(contact);
                     }
                 }
-                return inMethodList;
+                return foundList;
             } else {
                 for (Contact c : listOfContacts) {
-                    if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equalsIgnoreCase(nameOrPhone)) {
+                    if (compareContactDetails(c, nameOrPhone)) {
                         listOfContacts.remove(c);
                         break;
                     }
@@ -186,10 +192,10 @@ public class myPhoneBook extends PhoneBookBlueprint {
 
     // TODO if there is time, use contains to find partial names
     @Override
-    public ArrayList<Contact> findContact(ArrayList<Contact> listOfContacts, String contactName) {
+    public ArrayList<Contact> findContact(ArrayList<Contact> listOfContacts, String contactNameOrPhone) {
         ArrayList<Contact> contactsFound = new ArrayList<>();
         for (Contact c : listOfContacts) {
-            if (c.getName().equalsIgnoreCase(contactName)) {
+            if (compareContactDetails(c, contactNameOrPhone)) {
                 contactsFound.add(c);
             }
         }

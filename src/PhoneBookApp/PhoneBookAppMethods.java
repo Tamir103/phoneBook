@@ -57,6 +57,25 @@ public class PhoneBookAppMethods {
         return 0;
     }
 
+    public static boolean isListsSizesEquals(int listSize1, int listSize2) {
+        return listSize1 == listSize2;
+    }
+   public static boolean performAnotherAction(String input) {
+//        System.out.println(myPhoneBook.textsMap.get("anotherAction"));
+//        String input = setApp.scan.nextLine();
+       boolean result = false;
+       try {
+           if (validationMethods.isYorN(input).equalsIgnoreCase("Y")) {
+               result = true;
+           } else if (validationMethods.isYorN(input).equalsIgnoreCase("N")) {
+               result = false;
+           }
+       } catch (NullPointerException npe) {
+            printErrorMessages(1);
+       }
+       return result;
+   }
+
     /**
      * Printing error text according to message index
      *
@@ -121,7 +140,7 @@ public class PhoneBookAppMethods {
                 }
             }
         } else {
-            return 1;
+            return 7;
         }
     }
 

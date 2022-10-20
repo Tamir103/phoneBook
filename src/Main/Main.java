@@ -7,6 +7,7 @@ import PhoneBookUtils.Contact;
 import java.util.ArrayList;
 
 public class Main extends setApp {
+    //TODO when the need of testList is over, delete it an generateTestList, and restore and test contactsList
     static ArrayList<Contact> generateTestList() {
         ArrayList<Contact> list = new ArrayList<>();
         Contact c1 = new Contact();
@@ -34,20 +35,20 @@ public class Main extends setApp {
 
     public static void main(String[] args) {
         ArrayList<Contact> testList = generateTestList();
-
+        ArrayList<Contact> validationList = new ArrayList<>();
         boolean exit = false;
         System.out.println(myPhoneBook.textsMap.get("welcome"));
         while (!exit) {
             fun.printMenu();
             String menuChoice = scan.nextLine();
-            int menuInput = fun.menuChoice(menuChoice);
+            int menuInput = fun.menuChoice(menuChoice); //TODO validate menu numbers only
             switch (menuInput) {
                 case 1:
                     Contact contact = myPhoneBook.createContact();
                     int listSizeBeforeAdd = contactsList.size();
                     contactsList = myPhoneBook.addContact(contact, contactsList);
                     int listSizeAfterAdd = contactsList.size();
-                    if (listSizeBeforeAdd == listSizeAfterAdd || contact == null) {
+                    if (fun.isListsSizesEquals(listSizeBeforeAdd, listSizeAfterAdd) || contact == null) {
                         exit = true;
                     }
                     break;
@@ -56,28 +57,35 @@ public class Main extends setApp {
                     for (int i = 0; i < 3; i++) {
                         System.out.println(myPhoneBook.textsMap.get("removeContact"));
                         String nameOrPhone = scan.nextLine();
-                        if (validation.validateYorN(nameOrPhone)) { //TODO replace validation, maybe use findContact to validate
-                            System.out.println(myPhoneBook.textsMap.get("removeAll"));
-                            String removeAll = scan.nextLine();
-                            if (validation.validateYorN(removeAll) && removeAll.equalsIgnoreCase("Y")) {
+                        validationList = myPhoneBook.findContact(testList, nameOrPhone);
+                        if (validationList.size() > 0) {
+                            int yORn = validation.enterAndValidateYorN("removeAll");
+                            if (yORn == 1) {
                                 //   contactsList = myPhoneBook.removeContact(contactsList, nameOrPhone, true);
                                 testList = myPhoneBook.removeContact(testList, nameOrPhone, true);
-                                if (listSize == testList.size()){
+                                if (fun.isListsSizesEquals(listSize, testList.size())) {
                                     fun.printErrorMessages(8);
+                                } else {
+                                    System.out.println(myPhoneBook.textsMap.get("actionSuccess"));
+                                    break;
                                 }
-                            } else if (validation.validateYorN(removeAll) && removeAll.equalsIgnoreCase("N")) {
+                            } else if (yORn == 0) {
                                 //   contactsList = myPhoneBook.removeContact(contactsList,nameOrPhone, false);
                                 testList = myPhoneBook.removeContact(testList, nameOrPhone, false);
-                                if (listSize == testList.size()){
+                                if (fun.isListsSizesEquals(listSize, testList.size())){
                                     fun.printErrorMessages(8);
+                                } else {
+                                    System.out.println(myPhoneBook.textsMap.get("actionSuccess"));
+                                    break;
                                 }
                             } else {
-                                fun.printErrorMessages(8);
+                                i = 3;
                             }
                         } else {
                             fun.printErrorMessages(8);
                         }
                     }
+                    validationList.removeAll(validationList);
                     break;
                 case 3:
                     myPhoneBook.printPhoneBook(/*contactsList*/ testList);
@@ -107,7 +115,7 @@ public class Main extends setApp {
             if (exit) {
                 System.out.println(myPhoneBook.textsMap.get("exit"));
             } else {
-                System.out.println(myPhoneBook.textsMap.get("anotherAction"));
+                System.out.println(myPhoneBook.textsMap.get("moreAction"));
             }
         }
     }

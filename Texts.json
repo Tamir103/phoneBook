@@ -11,6 +11,8 @@
     "removeContact": "To remove contact - enter contact full name or phone number",
     "removeAll": "Would you like to remove all contacts matching this name or phone number? \nEnter Y to remove all or N to remove the first one among them",
     "contactNotExist": "This contact is not in your phone book",
-    "anotherAction": "Please choose your next action: ",
+    "moreAction": "Please choose your next action: ",
+    "actionSuccess": "Action is successful",
+    "anotherAction": "Would you like to perform another action? \nEnter Y or N",
     "exit": "Thank you for using the PhoneBook Application - GOODBYE"
 }

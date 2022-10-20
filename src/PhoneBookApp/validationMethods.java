@@ -9,6 +9,7 @@ public class validationMethods {
 
     /**
      * Clean and validate String contains only english letters using removeWhiteSpaces and isOnlyEnglish letters methods
+     *
      * @param str - String to be validated
      * @return cleaned and validated string or null if string is invalid
      */
@@ -49,7 +50,7 @@ public class validationMethods {
         if (nameNoUselessSpaces.length() > 0) {
             return nameNoUselessSpaces;
         } else {
-           return null;
+            return null;
         }
     }
 
@@ -113,7 +114,34 @@ public class validationMethods {
         return num <= map.size() && num > 0;
     }
 
-    public static boolean validateYorN(String input) {
-        return input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("N");
+    /**
+     * Accepts and validates Y or N input
+     * @param startMessage - Which message to prompt the user with
+     * @return - 1 for Y, 0 for N, 2 for invalid input
+     */
+    public static int enterAndValidateYorN(String startMessage) {
+        System.out.println(myPhoneBook.textsMap.get(startMessage));
+        for (int i = 0; i < 3; i++) {
+            int errorMessage = PhoneBookAppMethods.calculateMessageIndex(i, true, true);
+            try {
+                String input = setApp.scan.nextLine();
+                if (isYorN(input).equalsIgnoreCase("Y")) {
+                    return 1;
+                } else if (isYorN(input).equalsIgnoreCase("N")) {
+                    return 0;
+                }
+            } catch (NullPointerException npe) {
+                PhoneBookAppMethods.printErrorMessages(errorMessage);
+            }
+        }
+
+        return 2;
+    }
+
+    public static String isYorN(String input) {
+        if (input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("N")) {
+            return input;
+        }
+        return null;
     }
 }
