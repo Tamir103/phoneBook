@@ -16,6 +16,7 @@ import java.util.Objects;
 public class myPhoneBook extends PhoneBookBlueprint {
 
     public static HashMap<String, String> textsMap = new HashMap<>();
+
     myPhoneBook() {
         this.textsMap = generateTexts();
     }
@@ -115,13 +116,14 @@ public class myPhoneBook extends PhoneBookBlueprint {
     static boolean compareContactDetails(Contact c, String nameOrPhone) {
         return c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equals(nameOrPhone);
     }
+
     // TODO use search method
     @Override
     public ArrayList<Contact> removeContact(ArrayList<Contact> listOfContacts, String nameOrPhone, boolean removeAll) {
         ArrayList<Contact> inMethodList = findContact(listOfContacts, nameOrPhone);
-        if (!PhoneBookAppMethods.isListEmpty(inMethodList)) {
+        if (!inMethodList.isEmpty()) {
             if (removeAll) {
-                ArrayList<Contact> foundList  = new ArrayList<>();
+                ArrayList<Contact> foundList = new ArrayList<>();
                 Contact[] contactsArr = new Contact[listOfContacts.size()];
                 for (int i = 0; i < listOfContacts.size(); i++) {
                     contactsArr[i] = listOfContacts.get(i);
@@ -164,12 +166,15 @@ public class myPhoneBook extends PhoneBookBlueprint {
             return listOfContacts;
         }
     }
+
     public void printContact(Contact c) {
         String name = c.getName();
         String phone = c.getPhoneNumber();
         int dotAmount = 25 - name.length();
         System.out.print(Objects.requireNonNullElse(name, "Null"));
         PhoneBookAppMethods.printMenuDots(dotAmount);
+        System.out.print(phone);
+
     }
 
     @Override

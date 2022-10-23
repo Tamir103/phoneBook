@@ -70,9 +70,36 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
         Collections.sort(listOfContacts, compareByPhone.reversed());
         return listOfContacts;
     }
+
+    /**
+     * Removing duplicates (identical contacts)
+     * @param listOfContacts List for duplicates removal
+     * @return List with duplicates removed
+     */
     public ArrayList<Contact> removeDuplicates(ArrayList<Contact> listOfContacts) {
-        // TODO implement this method
+        ArrayList<Contact> duplicatesList = findDuplicates(listOfContacts);
+        if (!duplicatesList.isEmpty()) {
+            for (int i = 0; i < duplicatesList.size(); i++) {
+                listOfContacts.remove(duplicatesList.get(i));
+            }
+        }
         return listOfContacts;
+    }
+    public static ArrayList<Contact> findDuplicates(ArrayList<Contact> listOfContacts) {
+        ArrayList<Contact> duplicatesList = new ArrayList<>();
+        for (int i = 0; i < listOfContacts.size(); i++) {
+            Contact c1 = listOfContacts.get(i);
+            for (int j = i + 1; j < listOfContacts.size(); j++) {
+                Contact c2 = listOfContacts.get(j);
+                if (c1.getName().equalsIgnoreCase(c2.getName())) {
+                    if (c1.getPhoneNumber().equals(c2.getPhoneNumber())) {
+                        duplicatesList.add(c2);
+                        i++;
+                    }
+                }
+            }
+        }
+        return duplicatesList;
     }
     public abstract void exportPhoneBook(ArrayList<Contact> listOfContacts);
     public abstract ArrayList<Contact> importPhoneBook();

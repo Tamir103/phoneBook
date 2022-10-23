@@ -34,10 +34,6 @@ public class PhoneBookAppMethods {
         System.out.println();
     }
 
-    public static boolean isListEmpty(ArrayList<?> list) {
-        return list.size() == 0;
-    }
-
     /**
      * Getting user choice from menu and validate it
      *

@@ -39,11 +39,6 @@ public class Main extends setApp {
     }
 
     public static void main(String[] args) {
-
-        BigInteger a = new BigInteger("091111111");
-        BigInteger b = new BigInteger("0544444444");
-        System.out.println( (a.compareTo(b) > 0 ? "a" : "b") + " is larger.");
-
         ArrayList<Contact> testList = generateTestList();
         ArrayList<Contact> validationList = new ArrayList<>();
         boolean exit = false;
@@ -62,13 +57,13 @@ public class Main extends setApp {
                         exit = true;
                     }
                     break;
-                case 2:  // TODO organize and maybe export to some methods
+                case 2:  // TODO organize and maybe export to some methods, test this it's not right
                     int listSize = /*contactsList.size();*/ testList.size();
                     for (int i = 0; i < 3; i++) {
                         System.out.println(myPhoneBook.textsMap.get("removeContact"));
                         String nameOrPhone = scan.nextLine();
                         validationList = myPhoneBook.findContact(testList, nameOrPhone); //TODO error messages order
-                        if (validationList.size() > 0) {
+                        if (!validationList.isEmpty()) {
                             int yORn = validation.enterAndValidateYorN("removeAll");
                             if (yORn == 1) {
                                 //   contactsList = myPhoneBook.removeContact(contactsList, nameOrPhone, true);
@@ -109,7 +104,7 @@ public class Main extends setApp {
                         if (validation.isOnlyEnglishLetters(name)) {
                             ArrayList<Contact> contactsFound = myPhoneBook.findContact(testList, name);
                           //  ArrayList<Contact> contactsFound = myPhoneBook.findContact(contactsList, name);
-                            if (contactsFound.size() > 0) {
+                            if (!contactsFound.isEmpty()) {
                                 myPhoneBook.printPhoneBook(contactsFound);
                                 break;
                             } else {
@@ -125,7 +120,6 @@ public class Main extends setApp {
                     myPhoneBook.printPhoneBook(testList /*contactsList*/);
                     break;
                 case 6:
-                    // sort by phone - largest to smallest
                     testList /*contactsList*/ = myPhoneBook.sortByPhoneBigToSmall(testList /*contactsList*/);
                     myPhoneBook.printPhoneBook(testList /*contactsList*/);
                     break;
@@ -137,7 +131,14 @@ public class Main extends setApp {
                     myPhoneBook.printPhoneBook(testList /*contactsList*/);
                     break;
                 case 8:
-                    testList.get(0).equals(testList.get(1));
+                    ArrayList<Contact> duplicatesList = myPhoneBook.findDuplicates(testList);
+                    testList = myPhoneBook.removeDuplicates(testList);
+                    if (!duplicatesList.isEmpty()) {
+                        System.out.println("DUPLICATES REMOVED: ");
+                        myPhoneBook.printPhoneBook(duplicatesList);
+                    } else {
+                        System.out.println("No Duplicates Found");
+                    }
                     break;
                 case 11:
                     exit = true;
