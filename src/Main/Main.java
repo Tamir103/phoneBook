@@ -4,6 +4,7 @@ import PhoneBookApp.PhoneBookAppMethods;
 import PhoneBookApp.setApp;
 import PhoneBookUtils.Contact;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Main extends setApp {
@@ -15,6 +16,7 @@ public class Main extends setApp {
         Contact c3 = new Contact();
         Contact c4 = new Contact();
         Contact c5 = new Contact();
+//        Contact c6 = new Contact();
         c1.setName("Tuvia the cat");
         c1.setPhoneNumber("0544444444");
         c2.setName("Zen the dog");
@@ -25,15 +27,23 @@ public class Main extends setApp {
         c4.setPhoneNumber("0544444444");
         c5.setName("Tuvia the cat");
         c5.setPhoneNumber("098765432");
+//        c6.setName("avi");
+
         list.add(c1);
         list.add(c2);
         list.add(c3);
         list.add(c4);
         list.add(c5);
+//        list.add(c6);
         return list;
     }
 
     public static void main(String[] args) {
+
+        BigInteger a = new BigInteger("091111111");
+        BigInteger b = new BigInteger("0544444444");
+        System.out.println( (a.compareTo(b) > 0 ? "a" : "b") + " is larger.");
+
         ArrayList<Contact> testList = generateTestList();
         ArrayList<Contact> validationList = new ArrayList<>();
         boolean exit = false;
@@ -57,7 +67,7 @@ public class Main extends setApp {
                     for (int i = 0; i < 3; i++) {
                         System.out.println(myPhoneBook.textsMap.get("removeContact"));
                         String nameOrPhone = scan.nextLine();
-                        validationList = myPhoneBook.findContact(testList, nameOrPhone);
+                        validationList = myPhoneBook.findContact(testList, nameOrPhone); //TODO error messages order
                         if (validationList.size() > 0) {
                             int yORn = validation.enterAndValidateYorN("removeAll");
                             if (yORn == 1) {
@@ -78,6 +88,8 @@ public class Main extends setApp {
                                     System.out.println(myPhoneBook.textsMap.get("actionSuccess"));
                                     break;
                                 }
+                            } else if (yORn == 2 && i == 2) {
+                                fun.printErrorMessages(8);
                             } else {
                                 i = 3;
                             }
@@ -107,6 +119,25 @@ public class Main extends setApp {
                             fun.printErrorMessages(fun.calculateMessageIndex(i, true, true));
                         }
                     }
+                    break;
+                case 5:
+                    testList /*contactsList*/ = myPhoneBook.sortByNameAlphabetically(testList /*contactsList*/);
+                    myPhoneBook.printPhoneBook(testList /*contactsList*/);
+                    break;
+                case 6:
+                    // sort by phone - largest to smallest
+                    testList /*contactsList*/ = myPhoneBook.sortByPhoneBigToSmall(testList /*contactsList*/);
+                    myPhoneBook.printPhoneBook(testList /*contactsList*/);
+                    break;
+                case 7:
+                    System.out.println("BEFORE SORTING: ");
+                    myPhoneBook.printPhoneBook(testList /*contactsList*/);
+                    testList /*contactsList*/ = myPhoneBook.sortByNameReverse(testList /*contactsList*/);
+                    System.out.println("AFTER SORTING: ");
+                    myPhoneBook.printPhoneBook(testList /*contactsList*/);
+                    break;
+                case 8:
+                    testList.get(0).equals(testList.get(1));
                     break;
                 case 11:
                     exit = true;

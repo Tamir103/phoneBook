@@ -134,7 +134,6 @@ public class validationMethods {
                 PhoneBookAppMethods.printErrorMessages(errorMessage);
             }
         }
-
         return 2;
     }
 

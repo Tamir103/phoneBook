@@ -8,6 +8,11 @@ public class Contact {
     private String name;
     private String phoneNumber;
 
+//    public Contact(String name, String phoneNumber) {
+//        setName(name);
+//        setPhoneNumber(phoneNumber);
+//    }
+
     /**
      * Setting contact name and validating the use of english letters
      * In this case name is limited to 20 characters

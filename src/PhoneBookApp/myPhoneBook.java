@@ -10,11 +10,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class myPhoneBook extends PhoneBookBlueprint {
 
-    public static HashMap<String, String> textsMap = generateTexts();
+    public static HashMap<String, String> textsMap = new HashMap<>();
+    myPhoneBook() {
+        this.textsMap = generateTexts();
+    }
 
     //TODO javadoc this
     public static HashMap<String, String> generateTexts(/*String jsonPath*/) {
@@ -109,10 +113,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
     }
 
     static boolean compareContactDetails(Contact c, String nameOrPhone) {
-        if (c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equals(nameOrPhone)) {
-            return true;
-        }
-        return false;
+        return c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equals(nameOrPhone);
     }
     // TODO use search method
     @Override
@@ -167,9 +168,8 @@ public class myPhoneBook extends PhoneBookBlueprint {
         String name = c.getName();
         String phone = c.getPhoneNumber();
         int dotAmount = 25 - name.length();
-        System.out.print(name);
+        System.out.print(Objects.requireNonNullElse(name, "Null"));
         PhoneBookAppMethods.printMenuDots(dotAmount);
-        System.out.print(phone);
     }
 
     @Override
@@ -179,7 +179,13 @@ public class myPhoneBook extends PhoneBookBlueprint {
         for (Contact contact : listOfContacts) {
             System.out.print("| ");
             printContact(contact);
-            int totalLineLength = 25 + contact.getPhoneNumber().length();
+            int totalLineLength;
+            try {
+                totalLineLength = 25 + contact.getPhoneNumber().length();
+            } catch (NullPointerException npe) {
+                totalLineLength = 35;
+                System.out.print("      ");
+            }
             if (totalLineLength == 35) {
                 System.out.print("|");
             } else {
@@ -200,6 +206,12 @@ public class myPhoneBook extends PhoneBookBlueprint {
             }
         }
         return contactsFound;
+    }
+
+    // TODO test it
+    @Override
+    public ArrayList<Contact> sortByNameAlphabetically(ArrayList<Contact> listOfContacts) {
+        return super.sortByNameAlphabetically(listOfContacts);
     }
 
     @Override
