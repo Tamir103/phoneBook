@@ -39,10 +39,17 @@ public class Main extends setApp {
     }
 
     public static void main(String[] args) {
+        BigInteger o = new BigInteger("5000000000");
+        BigInteger y = new BigInteger("10000000000");
+        if (o.intValue() > y.intValue()) {
+            System.out.println("true");
+        }
+        setApp setApp = new setApp(); // TODO is that a better way than extends
+
         ArrayList<Contact> testList = generateTestList();
         ArrayList<Contact> validationList = new ArrayList<>();
         boolean exit = false;
-        System.out.println(myPhoneBook.textsMap.get("welcome"));
+        System.out.println(setApp.myPhoneBook.textsMap.get("welcome"));
         while (!exit) {
             fun.printMenu();
             String menuChoice = scan.nextLine();
@@ -139,6 +146,9 @@ public class Main extends setApp {
                     } else {
                         System.out.println("No Duplicates Found");
                     }
+                    break;
+                case 9:
+                    myPhoneBook.exportPhoneBook(testList);
                     break;
                 case 11:
                     exit = true;

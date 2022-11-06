@@ -4,13 +4,10 @@ import PhoneBookUtils.Contact;
 import PhoneBookUtils.PhoneBookBlueprint;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 public class myPhoneBook extends PhoneBookBlueprint {
@@ -117,7 +114,6 @@ public class myPhoneBook extends PhoneBookBlueprint {
         return c.getName().equalsIgnoreCase(nameOrPhone) || c.getPhoneNumber().equals(nameOrPhone);
     }
 
-    // TODO use search method
     @Override
     public ArrayList<Contact> removeContact(ArrayList<Contact> listOfContacts, String nameOrPhone, boolean removeAll) {
         ArrayList<Contact> inMethodList = findContact(listOfContacts, nameOrPhone);
@@ -213,15 +209,71 @@ public class myPhoneBook extends PhoneBookBlueprint {
         return contactsFound;
     }
 
-    // TODO test it
     @Override
     public ArrayList<Contact> sortByNameAlphabetically(ArrayList<Contact> listOfContacts) {
         return super.sortByNameAlphabetically(listOfContacts);
     }
 
     @Override
-    public void exportPhoneBook(ArrayList<Contact> listOfContacts) {
+    public void exportPhoneBook(ArrayList<Contact> listOfContacts) { //TODO continue with export flow - new or existing file
 
+        String fileName = validateFileName("PhoneBook2");  //TODO if no entered prompt user for new name or default one
+        try {
+            // Creating a File object that
+            // represents the disk file
+            PrintStream o = new PrintStream(new FileOutputStream(fileName, true));
+
+            // Store current System.out
+            // before assigning a new value
+            PrintStream console = System.out;
+
+            // Assign o to output stream
+            // using setOut() method
+            System.setOut(o);
+
+            // printing
+            printPhoneBook(listOfContacts);
+
+            // Use stored value for output stream
+            System.setOut(console);
+
+        } catch (FileNotFoundException fnfe) {
+            System.out.println("Error in writing to file");
+        }
+    }
+
+    public String validateFileName(String fileName) { //TODO print to existing file, and maybe ask user to try naming it again
+        String fileFullName = fileName + ".txt";
+        File file = new File(fileFullName);
+        if (!file.isFile()) {
+            if (fileName.length() <= 10) {
+                return fileFullName;
+            } else {
+                myPhoneBook.textsMap.get("nameTooLong");
+                myPhoneBook.textsMap.get("createRandomFileName");
+                return createRandomPhoneBookName();
+            }
+        } else {
+            int yORn = validationMethods.enterAndValidateYorN("fileExist");
+            if (yORn == 1) {
+                return fileFullName;
+            } else if (yORn == 0) {
+                myPhoneBook.textsMap.get("createRandomFileName");
+                return createRandomPhoneBookName();
+            } else {
+                //TODO error
+            }
+
+        }
+        return "0";
+    }
+
+    public String createRandomPhoneBookName() {
+        DateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+        Date today = Calendar.getInstance().getTime();
+        String printDate = dFormat.format(today);
+        String exportFileName = "PhoneBook " + printDate + ".txt";
+        return exportFileName;
     }
 
     @Override

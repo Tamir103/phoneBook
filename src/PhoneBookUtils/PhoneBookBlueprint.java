@@ -26,6 +26,7 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
 
     private Comparator<Contact> compareByName = (Contact o1, Contact o2) -> o1.getName().compareToIgnoreCase(o2.getName());
     private Comparator<Contact> compareByPhone = Comparator.comparing(Contact::getPhoneNumber);
+
     // TODO need to be tested
     public ArrayList<Contact> sortByNameAlphabetically(ArrayList<Contact> listOfContacts){
 //        Collections.sort(listOfContacts, ((o1, o2) -> o1.getName().compareTo(o2.getName())));
@@ -52,13 +53,16 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
     public ArrayList<Contact> sortByPhoneBigToSmall(ArrayList<Contact> listOfContacts) {
 //        Collections.sort(listOfContacts, (o1, o2) -> {
 //            int phone1, phone2;
+        /*    BigInteger phone1, phone2; */
 //            try {
 //                phone1 = Integer.parseInt(o1.getPhoneNumber());
+      /*  phone1 = new BigInteger(o1.getPhoneNumber()); */
 //            } catch (NumberFormatException nfe) {
 //                phone1 = 0;
 //            }
 //            try {
 //                phone2 = Integer.parseInt(o2.getPhoneNumber());
+           /* phone2 = new BigInteger(o2.getPhoneNumber()); */
 //            } catch (NumberFormatException nfe) {
 //                phone2 = 0;
 //            }
@@ -66,6 +70,7 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
 //            if(phone1 == phone2)
 //                return 0;
 //            return phone1 < phone2 ? -1 : 1;
+          /*  return phone1.compareTo(phone2) > 0 ? 1 :-1; */
 //        });
         Collections.sort(listOfContacts, compareByPhone.reversed());
         return listOfContacts;
