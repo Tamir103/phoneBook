@@ -12,6 +12,7 @@ import java.util.*;
 
 public class myPhoneBook extends PhoneBookBlueprint {
 
+    static SetApp mSetApp = SetApp.getInstance();
     public static HashMap<String, String> textsMap = new HashMap<>();
 
     myPhoneBook() {
@@ -23,7 +24,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
         try {
             // create Gson instance
             Gson gson = new Gson();
-            HashMap map;
+            HashMap<String, String> map;
 
             // create a reader
             BufferedReader bufferedReader = new BufferedReader(new FileReader("./Texts.json"));
@@ -45,10 +46,10 @@ public class myPhoneBook extends PhoneBookBlueprint {
         menu.put(2, "Delete contact");
         menu.put(3, "Print all contacts");
         menu.put(4, "Search and print contact");
-        menu.put(5, "Sort by name alphabetically: A-Z and print");
-        menu.put(6, "Sort by phone - largest to smallest number");
-        menu.put(7, "Sort by name alphabetically: Z-A and print before and after");
-        menu.put(8, "Remove duplicates and print them");
+        menu.put(5, "Sort by name alphabetically");
+        menu.put(6, "Sort by phone");
+        menu.put(7, "Sort by name alphabetically - reversed");
+        menu.put(8, "Remove duplicates");
         menu.put(9, "Save phone book to a file");
         menu.put(10, "Upload phone book from a file");
         menu.put(11, "Exit");
@@ -71,35 +72,35 @@ public class myPhoneBook extends PhoneBookBlueprint {
     public Contact createContact() {
         boolean success = false;
         Contact contact = new Contact();
-        System.out.println(textsMap.get("enterName"));
+        System.out.println(textsMap.get("enterContactName"));
         for (int i = 0; i < 3; i++) {
-            String name = setApp.scan.nextLine();
+            String name = mSetApp.scan.nextLine();
             try {
                 contact.setName(name);
                 success = true;
                 break;
             } catch (IllegalArgumentException iae) {
-                PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, true, true));
+                mSetApp.fun.printErrorMessages(mSetApp.fun.calculateMessageIndex(i, true, true));
             } catch (ArithmeticException ae) {
-                PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, false, true));
+                mSetApp.fun.printErrorMessages(mSetApp.fun.calculateMessageIndex(i, false, true));
             }
         }
 
         if (success) {
             System.out.println(appTexts.textsMap.get("enterPhone"));
             for (int i = 0; i < 3; i++) {
-                String phone = setApp.scan.nextLine();
+                String phone = mSetApp.scan.nextLine();
                 try {
                     contact.setPhoneNumber(phone);
                     return contact;
                 } catch (NumberFormatException nfe) {
-                    PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, false, false));
+                    mSetApp.fun.printErrorMessages(mSetApp.fun.calculateMessageIndex(i, false, false));
                 } catch (IllegalArgumentException iae) {
-                    PhoneBookAppMethods.printErrorMessages(PhoneBookAppMethods.calculateMessageIndex(i, true, false));
+                    mSetApp.fun.printErrorMessages(mSetApp.fun.calculateMessageIndex(i, true, false));
                 }
             }
         }
-        PhoneBookAppMethods.printErrorMessages(7);
+        mSetApp.fun.printErrorMessages(7);
         return null;
     }
 
@@ -168,14 +169,14 @@ public class myPhoneBook extends PhoneBookBlueprint {
         String phone = c.getPhoneNumber();
         int dotAmount = 25 - name.length();
         System.out.print(Objects.requireNonNullElse(name, "Null"));
-        PhoneBookAppMethods.printMenuDots(dotAmount);
+        mSetApp.fun.printMenuDots(dotAmount);
         System.out.print(phone);
 
     }
 
     @Override
     public void printPhoneBook(ArrayList<Contact> listOfContacts) {
-        PhoneBookAppMethods.printFrame(37);
+        mSetApp.fun.printFrame(37);
         System.out.println("CONTACTS: ");
         for (Contact contact : listOfContacts) {
             System.out.print("| ");
@@ -215,9 +216,10 @@ public class myPhoneBook extends PhoneBookBlueprint {
     }
 
     @Override
-    public void exportPhoneBook(ArrayList<Contact> listOfContacts) { //TODO continue with export flow - new or existing file
+    public void exportPhoneBook(ArrayList<Contact> listOfContacts) {
 
-        String fileName = validateFileName("PhoneBook2");  //TODO if no entered prompt user for new name or default one
+        System.out.println(textsMap.get("enterFileName"));
+        String fileName = validateFileName(mSetApp.scan.nextLine());
         try {
             // Creating a File object that
             // represents the disk file
@@ -238,19 +240,19 @@ public class myPhoneBook extends PhoneBookBlueprint {
             System.setOut(console);
 
         } catch (FileNotFoundException fnfe) {
-            System.out.println("Error in writing to file");
+            System.err.println("Error in writing to file");
         }
     }
 
-    public String validateFileName(String fileName) { //TODO print to existing file, and maybe ask user to try naming it again
+    public String validateFileName(String fileName) {
         String fileFullName = fileName + ".txt";
         File file = new File(fileFullName);
         if (!file.isFile()) {
-            if (fileName.length() <= 10) {
+            if (fileName.length() <= 15) {
                 return fileFullName;
             } else {
-                myPhoneBook.textsMap.get("nameTooLong");
-                myPhoneBook.textsMap.get("createRandomFileName");
+                System.out.println(textsMap.get("nameTooLong"));
+                System.out.println(textsMap.get("createRandomFileName"));
                 return createRandomPhoneBookName();
             }
         } else {
@@ -258,12 +260,9 @@ public class myPhoneBook extends PhoneBookBlueprint {
             if (yORn == 1) {
                 return fileFullName;
             } else if (yORn == 0) {
-                myPhoneBook.textsMap.get("createRandomFileName");
+                System.out.println(textsMap.get("createRandomFileName"));
                 return createRandomPhoneBookName();
-            } else {
-                //TODO error
             }
-
         }
         return "0";
     }
@@ -272,13 +271,43 @@ public class myPhoneBook extends PhoneBookBlueprint {
         DateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
         Date today = Calendar.getInstance().getTime();
         String printDate = dFormat.format(today);
-        String exportFileName = "PhoneBook " + printDate + ".txt";
-        return exportFileName;
+        return "PhoneBook " + printDate + ".txt";
     }
 
     @Override
-    public ArrayList<Contact> importPhoneBook() {
-        return null;
+    public ArrayList<Contact> importPhoneBook() { //TODO add text that explains reading format
+        ArrayList<Contact> importedContactsList = new ArrayList<>();
+        String rawLine;
+        String name = "";
+        String phone = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("book.txt"));
+            while ((rawLine = reader.readLine()) != null) {
+                Contact contact = new Contact();
+                for (int i = 0; i < rawLine.length(); i++) {
+                    int charValue = rawLine.charAt(i);
+                    String currentChar = Character.toString((char) charValue);
+                    if (((charValue >= 65 && charValue <= 90) || (charValue >= 97 && charValue <= 122) || charValue == 32)) {
+                        name = name.concat(currentChar);
+                    } else if ((charValue >= 48 && charValue <= 57)) {
+                        phone = phone.concat(currentChar);
+                    }
+                }
+                if (!(name.equals("CONTACTS") || name.equals("") || phone.equals(""))) {
+                    name = mSetApp.validation.validateLettersOnly(name);
+                    contact.setName(name);
+                    contact.setPhoneNumber(phone);
+                    importedContactsList = addContact(contact, importedContactsList);
+                }
+                name = "";
+                phone = "";
+            }
+        } catch (FileNotFoundException fnfe) {
+            System.err.println("File Not Found"); //TODO maybe put text in errors map
+        } catch (IOException ioe) {
+            System.err.println("Error In Reading Phone Book");
+        }
+        return importedContactsList;
     }
 
     @Override

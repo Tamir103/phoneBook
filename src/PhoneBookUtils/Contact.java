@@ -95,11 +95,11 @@ public class Contact {
         if (isNumbersOnly(formattedPhone)) {
             if (phoneNumType(formattedPhone) == null) {
                 return null;
-            } else if (phoneNumType(formattedPhone).equals("cellphone")) {
+            } else if (phoneNumType(formattedPhone).equals("cellphone") || phoneNumType(formattedPhone).equals("long_landline")) {
                 if (formattedPhone.length() == 10) {
                     return formattedPhone;
                 }
-            } else if (phoneNumType(formattedPhone).equals("landline")) {
+            } else if (phoneNumType(formattedPhone).equals("short_landline")) {
                 if (formattedPhone.length() == 9) {
                     return formattedPhone;
                 }
@@ -115,12 +115,14 @@ public class Contact {
      * @return cellphone, landline or null
      */
     public String phoneNumType(String phone) {
-        // ASCII for 0 = 48, 5 = 53
+        // ASCII for 0 = 48, 5 = 53, 7 = 55
         if (phone.charAt(0) == 48) {
             if (phone.charAt(1) == 53) {
                 return "cellphone";
+            } else if (phone.charAt(1) == 55){
+                return "long_landline";
             } else {
-                return "landline";
+                return "short_landline";
             }
         } else {
             return null;

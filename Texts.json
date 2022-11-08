@@ -18,6 +18,6 @@
     "enterFileName": "Enter file name:",
     "writeToExistingFile": "Would you like to export the phone book to an existing file? \n Enter Y or N",
     "fileExist": "File already exist, would you like to write in it? \nEnter Y or N",
-    "createRandomFileName": "We assigned a random file name for you",
+    "createRandomFileName": "We assigned a random file name for you, with action date and time",
     "exit": "Thank you for using the PhoneBook Application - GOODBYE"
 }

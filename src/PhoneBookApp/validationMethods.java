@@ -7,6 +7,8 @@ import java.util.Map;
  */
 public class validationMethods {
 
+    static SetApp mSetApp = SetApp.getInstance();
+
     /**
      * Clean and validate String contains only english letters using removeWhiteSpaces and isOnlyEnglish letters methods
      *
@@ -22,7 +24,7 @@ public class validationMethods {
     }
 
     /**
-     * Validating only english letters, using validName method to remove white spaces
+     * Validating only english letters, using removeWhiteSpaces method to remove white spaces
      *
      * @param str to validate
      * @return true if only english letters
@@ -120,18 +122,18 @@ public class validationMethods {
      * @return - 1 for Y, 0 for N, 2 for invalid input
      */
     public static int enterAndValidateYorN(String startMessage) {
-        System.out.println(myPhoneBook.textsMap.get(startMessage));
+        System.out.println(mSetApp.myPhoneBook.textsMap.get(startMessage));
         for (int i = 0; i < 3; i++) {
-            int errorMessage = PhoneBookAppMethods.calculateMessageIndex(i, true, true);
+            int errorMessage = mSetApp.fun.calculateMessageIndex(i, true, true);
             try {
-                String input = setApp.scan.nextLine();
+                String input = mSetApp.scan.nextLine();
                 if (isYorN(input).equalsIgnoreCase("Y")) {
                     return 1;
                 } else if (isYorN(input).equalsIgnoreCase("N")) {
                     return 0;
                 }
             } catch (NullPointerException npe) {
-                PhoneBookAppMethods.printErrorMessages(errorMessage);
+                mSetApp.fun.printErrorMessages(errorMessage);
             }
         }
         return 2;

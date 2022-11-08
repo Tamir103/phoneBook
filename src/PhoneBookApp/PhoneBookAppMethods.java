@@ -1,14 +1,15 @@
 package PhoneBookApp;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 
-public class PhoneBookAppMethods {
-    private static String input;
 
-    public static void printMenu() {
-        for (Map.Entry<Integer, String> entry : setApp.menu.entrySet()) {
+public class PhoneBookAppMethods {
+
+    static SetApp mSetApp = SetApp.getInstance();
+
+    public void printMenu() {
+        for (Map.Entry<Integer, String> entry : mSetApp.menu.entrySet()) {
             if (entry.getKey() < 10) {
                 System.out.print(entry.getKey());
                 printMenuDots(8);
@@ -39,38 +40,39 @@ public class PhoneBookAppMethods {
      *
      * @return int input or 0 if input invalid 3 times
      */
-    public static int menuChoice(String input) {
+    public static int menuChoice(/*String input*/) {
         for (int i = 0; i < 3; i++) {
+            String input = mSetApp.scan.nextLine();
             if (validationMethods.isNumbersOnly(input)) {
                 int inputInt = Integer.parseInt(input);
-                if (validationMethods.isItemNumValid(inputInt, setApp.menu)) {
+                if (validationMethods.isItemNumValid(inputInt, mSetApp.menu)) {
                     return inputInt;
                 }
             }
-           printErrorMessages(1);
+            printErrorMessages(1);
         }
-        printErrorMessages(5);
+        printErrorMessages(4);
         return 0;
     }
 
     public static boolean isListsSizesEquals(int listSize1, int listSize2) {
         return listSize1 == listSize2;
     }
-   public static boolean performAnotherAction(String input) {
+    public static boolean performAnotherAction(String input) { // TODO organize and maybe use yn method
 //        System.out.println(myPhoneBook.textsMap.get("anotherAction"));
 //        String input = setApp.scan.nextLine();
-       boolean result = false;
-       try {
-           if (validationMethods.isYorN(input).equalsIgnoreCase("Y")) {
-               result = true;
-           } else if (validationMethods.isYorN(input).equalsIgnoreCase("N")) {
-               result = false;
-           }
-       } catch (NullPointerException npe) {
+        boolean result = false;
+        try {
+            if (validationMethods.isYorN(input).equalsIgnoreCase("Y")) {
+                result = true;
+            } else if (validationMethods.isYorN(input).equalsIgnoreCase("N")) {
+                result = false;
+            }
+        } catch (NullPointerException npe) {
             printErrorMessages(1);
-       }
-       return result;
-   }
+        }
+        return result;
+    }
 
     /**
      * Printing error text according to message index
@@ -95,10 +97,12 @@ public class PhoneBookAppMethods {
             case 6 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + appTexts.textsMap.get("phoneFormat"));
             case 7 -> System.err.println(myPhoneBook.textsMap.get("inputErrMsg"));
             case 8 -> System.err.println(myPhoneBook.textsMap.get("contactNotExist"));
+            case 9 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn"));
         }
     }
 
-    public static int calculateMessageIndex(int i, boolean isLengthValid, boolean isNameField) {
+    //TODO not DRY enough
+    public static int calculateMessageIndex(int i, boolean isLengthValid, boolean isNameField) { // TODO delete comments
         if (i == 0) {
             if (isNameField) {
                 if (isLengthValid) {
