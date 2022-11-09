@@ -274,14 +274,21 @@ public class myPhoneBook extends PhoneBookBlueprint {
         return "PhoneBook " + printDate + ".txt";
     }
 
+    /**
+     * Reading a phone book from txt file, file name (if in project folder) or path entered by the user
+     * Only name and phone number in the same line format is supported
+     * @return ArrayList of valid contacts read from file
+     */
     @Override
-    public ArrayList<Contact> importPhoneBook() { //TODO add text that explains reading format
+    public ArrayList<Contact> importPhoneBook() { //TODO still a bug in here (in file content format), fix if there is time
         ArrayList<Contact> importedContactsList = new ArrayList<>();
         String rawLine;
         String name = "";
         String phone = "";
+        System.out.println(textsMap.get("enterFileName"));
+        String fileName = mSetApp.scan.nextLine();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("book.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
             while ((rawLine = reader.readLine()) != null) {
                 Contact contact = new Contact();
                 for (int i = 0; i < rawLine.length(); i++) {
@@ -293,11 +300,15 @@ public class myPhoneBook extends PhoneBookBlueprint {
                         phone = phone.concat(currentChar);
                     }
                 }
-                if (!(name.equals("CONTACTS") || name.equals("") || phone.equals(""))) {
-                    name = mSetApp.validation.validateLettersOnly(name);
-                    contact.setName(name);
-                    contact.setPhoneNumber(phone);
-                    importedContactsList = addContact(contact, importedContactsList);
+                try {
+                    if (!(name.equals("CONTACTS") || name.equals("") || phone.equals(""))) {
+                        name = mSetApp.validation.validateLettersOnly(name);
+                        contact.setName(name);
+                        contact.setPhoneNumber(phone);
+                        importedContactsList = addContact(contact, importedContactsList);
+                    }
+                } catch (NumberFormatException nfe) {
+                    System.err.println("Phone book file is not in supported format");
                 }
                 name = "";
                 phone = "";
