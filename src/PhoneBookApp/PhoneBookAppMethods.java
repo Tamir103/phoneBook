@@ -20,7 +20,7 @@ public class PhoneBookAppMethods {
                 System.out.println(entry.getValue());
             }
         }
-        System.out.println(myPhoneBook.textsMap.get("menuInstructions"));
+        myPhoneBook.printTextsFromMap("menuInstructions");
     }
 
     public static void printMenuDots(int amount) {
@@ -40,7 +40,7 @@ public class PhoneBookAppMethods {
      *
      * @return int input or 0 if input invalid 3 times
      */
-    public static int menuChoice(/*String input*/) {
+    public static int menuChoice() {
         for (int i = 0; i < 3; i++) {
             String input = mSetApp.scan.nextLine();
             if (validationMethods.isNumbersOnly(input)) {
@@ -49,29 +49,14 @@ public class PhoneBookAppMethods {
                     return inputInt;
                 }
             }
-            printErrorMessages(1);
+            printErrorMessages(calculateMessageIndex(i, true, true, true));
         }
-        printErrorMessages(4);
+
         return 0;
     }
 
     public static boolean isListsSizesEquals(int listSize1, int listSize2) {
         return listSize1 == listSize2;
-    }
-    public static boolean performAnotherAction(String input) { // TODO organize and maybe use yn method
-//        System.out.println(myPhoneBook.textsMap.get("anotherAction"));
-//        String input = setApp.scan.nextLine();
-        boolean result = false;
-        try {
-            if (validationMethods.isYorN(input).equalsIgnoreCase("Y")) {
-                result = true;
-            } else if (validationMethods.isYorN(input).equalsIgnoreCase("N")) {
-                result = false;
-            }
-        } catch (NullPointerException npe) {
-            printErrorMessages(1);
-        }
-        return result;
     }
 
     /**
@@ -86,6 +71,7 @@ public class PhoneBookAppMethods {
      *                     6 - Phone format + last chance
      *                     7 - Max tries
      *                     8 - Contact not in phone book
+     *                     9 - Writing to file error
      */
     public static void printErrorMessages(int messageIndex) {
         switch (messageIndex) {
@@ -97,51 +83,54 @@ public class PhoneBookAppMethods {
             case 6 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + appTexts.textsMap.get("phoneFormat"));
             case 7 -> System.err.println(myPhoneBook.textsMap.get("inputErrMsg"));
             case 8 -> System.err.println(myPhoneBook.textsMap.get("contactNotExist"));
-            case 9 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn"));
+            case 9 -> System.err.println(myPhoneBook.textsMap.get("writeToFileErr"));
         }
     }
 
     //TODO not DRY enough
-    public static int calculateMessageIndex(int i, boolean isLengthValid, boolean isNameField) { // TODO delete comments
-        if (i == 0) {
+    public static int calculateMessageIndex(int i, boolean isGenericInputErrors, boolean isLengthValid, boolean isNameField) { // TODO delete comments
+        if (isGenericInputErrors) {
+            return genericInputErrors(i);
+        } else if (i == 0) {
             if (isNameField) {
                 if (isLengthValid) {
-                    //  System.err.println(texts.invalidInputWarn);
                     return 1;
                 } else {
-                    //  System.err.println(texts.nameLengthWarn);
                     return 2;
                 }
             } else {
                 if (isLengthValid) {
-                    //  System.err.println(texts.invalidInputWarn);
                     return 1;
                 } else {
-                    //  System.err.println(texts.phoneFormat);
                     return 3;
                 }
             }
         } else if (i == 1) {
             if (isNameField) {
                 if (isLengthValid) {
-                    //  System.err.println(texts.lastInvalidInputWarn);
                     return 4;
                 } else {
-                    //  System.err.println(texts.nameLengthWarn + " - " + texts.lastInvalidInputWarn);
                     return 5;
                 }
             } else {
                 if (isLengthValid) {
-                    //  System.err.println(texts.lastInvalidInputWarn);
                     return 4;
                 } else {
-                    //  System.err.println(texts.phoneFormat + " - " + texts.lastInvalidInputWarn);
                     return 6;
                 }
             }
         } else {
             return 7;
         }
+    }
+    public static int genericInputErrors(int index) {
+        int i = 0;
+        switch (index) {
+            case 0 -> i = 1;
+            case 1 -> i = 4;
+            case 2 -> i = 7;
+        }
+        return i;
     }
 
 

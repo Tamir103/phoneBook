@@ -44,36 +44,34 @@ public class Main {
         ArrayList<Contact> testList = generateTestList();
         ArrayList<Contact> validationList = new ArrayList<>();
         boolean exit = false;
-        System.out.println(myPhoneBook.textsMap.get("welcome"));
+        mSetApp.myPhoneBook.printTextsFromMap("welcome");
         while (!exit) {
             mSetApp.fun.printMenu();
-            //String menuChoice = mSetApp.scan.nextLine();
-            int menuInput = mSetApp.fun.menuChoice(/*menuChoice*/); //TODO validate menu numbers only
+            int menuInput = mSetApp.fun.menuChoice();
             switch (menuInput) {
                 case 1:
                     Contact contact = mSetApp.myPhoneBook.createContact();
                     int listSizeBeforeAdd = mSetApp.contactsList.size();
                     mSetApp.contactsList = mSetApp.myPhoneBook.addContact(contact, mSetApp.contactsList);
-                    int listSizeAfterAdd = mSetApp.contactsList.size();
-                    if (mSetApp.fun.isListsSizesEquals(listSizeBeforeAdd, listSizeAfterAdd) || contact == null) {
-                        exit = true;
+                    if (mSetApp.contactsList.size() == (listSizeBeforeAdd + 1)) {
+                        mSetApp.myPhoneBook.printTextsFromMap("actionSuccess");
                     }
                     break;
                 case 2:  // TODO organize and maybe export to some methods, test this it's not right
                     int listSize = /*contactsList.size();*/ testList.size();
                     for (int i = 0; i < 3; i++) {
-                        System.out.println(mSetApp.myPhoneBook.textsMap.get("removeContact"));
+                        mSetApp.myPhoneBook.printTextsFromMap("removeContact");
                         String nameOrPhone = mSetApp.scan.nextLine();
-                        validationList = mSetApp.myPhoneBook.findContact(testList, nameOrPhone); //TODO error messages order
+                        validationList = mSetApp.myPhoneBook.findContact(testList, nameOrPhone);
                         if (!validationList.isEmpty()) {
                             int yORn = mSetApp.validation.enterAndValidateYorN("removeAll");
                             if (yORn == 1) {
                                 //   contactsList = myPhoneBook.removeContact(contactsList, nameOrPhone, true);
                                 testList = mSetApp.myPhoneBook.removeContact(testList, nameOrPhone, true);
-                                if (mSetApp.fun.isListsSizesEquals(listSize, testList.size())) {
+                                if (mSetApp.fun.isListsSizesEquals(listSize, testList.size()) && i != 2) {
                                     mSetApp.fun.printErrorMessages(8);
                                 } else {
-                                    System.out.println(mSetApp.myPhoneBook.textsMap.get("actionSuccess"));
+                                    mSetApp.myPhoneBook.printTextsFromMap("actionSuccess");
                                     break;
                                 }
                             } else if (yORn == 0) {
@@ -82,7 +80,7 @@ public class Main {
                                 if (mSetApp.fun.isListsSizesEquals(listSize, testList.size())){
                                     mSetApp.fun.printErrorMessages(8);
                                 } else {
-                                    System.out.println(mSetApp.myPhoneBook.textsMap.get("actionSuccess"));
+                                    mSetApp.myPhoneBook.printTextsFromMap("actionSuccess");
                                     break;
                                 }
                             } else if (yORn == 2 && i == 2) {
@@ -90,18 +88,20 @@ public class Main {
                             } else {
                                 i = 3;
                             }
+                        } else if (i == 2) {
+                            mSetApp.fun.printErrorMessages(7);
                         } else {
                             mSetApp.fun.printErrorMessages(8);
                         }
                     }
-                    validationList.removeAll(validationList); // TODO test this
+                    validationList.removeAll(validationList);
                     break;
                 case 3:
-                    mSetApp.myPhoneBook.printPhoneBook(mSetApp.contactsList /*testList*/);
+                    mSetApp.myPhoneBook.printPhoneBook(/*mSetApp.contactsList*/testList);
                     break;
                 case 4:
                     for (int i = 0; i < 3; i++) {
-                        System.out.println(mSetApp.myPhoneBook.textsMap.get("enterContactName"));
+                        mSetApp.myPhoneBook.printTextsFromMap("enterContactName");
                         String name = mSetApp.scan.nextLine();
                         if (mSetApp.validation.isOnlyEnglishLetters(name)) {
                             ArrayList<Contact> contactsFound = mSetApp.myPhoneBook.findContact(testList, name);
@@ -111,9 +111,10 @@ public class Main {
                                 break;
                             } else {
                                 mSetApp.fun.printErrorMessages(8);
+                                mSetApp.fun.printErrorMessages(mSetApp.fun.calculateMessageIndex(i, true, true, true));
                             }
                         } else {
-                            mSetApp.fun.printErrorMessages(mSetApp.fun.calculateMessageIndex(i, true, true));
+                            mSetApp.fun.printErrorMessages(mSetApp.fun.calculateMessageIndex(i, true, true, true));
                         }
                     }
                     break;
@@ -143,20 +144,23 @@ public class Main {
                     }
                     break;
                 case 9:
-                    mSetApp.myPhoneBook.exportPhoneBook(testList);
+                    mSetApp.myPhoneBook.exportPhoneBook(/*mSetApp.contactsList*/testList);
                     break;
                 case 10:
                     mSetApp.contactsList = mSetApp.myPhoneBook.importPhoneBook();
+                    if (!(mSetApp.contactsList == null)) {
+                        mSetApp.myPhoneBook.printTextsFromMap("actionSuccess");
+                    }
                     break;
                 case 11:
                     exit = true;
                     break;
             }
             if (exit) {
-                System.out.println(mSetApp.myPhoneBook.textsMap.get("exit"));
+                mSetApp.myPhoneBook.printTextsFromMap("exit");
             } else {
                 Thread.sleep(2000);
-                System.out.println(mSetApp.myPhoneBook.textsMap.get("moreAction"));
+                mSetApp.myPhoneBook.printTextsFromMap("moreAction");
             }
         }
     }

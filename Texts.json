@@ -15,8 +15,9 @@
     "actionSuccess": "Action is successful",
     "anotherAction": "Would you like to perform another action? \nEnter Y or N",
     "nameTooLong": "Name entered is too long",
-    "enterFileName": "Enter file name:",
+    "enterFileName": "Enter file full name:",
     "writeToExistingFile": "Would you like to export the phone book to an existing file? \n Enter Y or N",
+    "writeToFileErr": "Error in writing to file",
     "fileExist": "File already exist, would you like to write in it? \nEnter Y or N",
     "createRandomFileName": "We assigned a random file name for you, with action date and time",
     "exit": "Thank you for using the PhoneBook Application - GOODBYE"

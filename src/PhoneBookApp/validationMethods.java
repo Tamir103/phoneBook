@@ -1,5 +1,6 @@
 package PhoneBookApp;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ public class validationMethods {
      * @param str - String to be validated
      * @return cleaned and validated string or null if string is invalid
      */
-    public String validateLettersOnly(String str) {
+    public static String validateLettersOnly(String str) {
         String cleanStr = removeWhiteSpaces(str);
         if (isOnlyEnglishLetters(str)) {
             return cleanStr;
@@ -29,7 +30,7 @@ public class validationMethods {
      * @param str to validate
      * @return true if only english letters
      */
-    public boolean isOnlyEnglishLetters(String str) {
+    public static boolean isOnlyEnglishLetters(String str) {
         // ASCII letters "a" = 97, "z" = 122, "A" = 65, "Z" = 90, " " = 32
         String validName = removeWhiteSpaces(str);
         for (int i = 0; i < validName.length(); i++) {
@@ -87,6 +88,7 @@ public class validationMethods {
                 }
             }
         } catch (NullPointerException npe) {
+            System.err.println("Error in cleanNumber method");
         }
         return validName;
     }
@@ -122,9 +124,9 @@ public class validationMethods {
      * @return - 1 for Y, 0 for N, 2 for invalid input
      */
     public static int enterAndValidateYorN(String startMessage) {
-        System.out.println(mSetApp.myPhoneBook.textsMap.get(startMessage));
+        myPhoneBook.printTextsFromMap(startMessage);
         for (int i = 0; i < 3; i++) {
-            int errorMessage = mSetApp.fun.calculateMessageIndex(i, true, true);
+            int errorMessage = PhoneBookAppMethods.calculateMessageIndex(i, true, true, true);
             try {
                 String input = mSetApp.scan.nextLine();
                 if (isYorN(input).equalsIgnoreCase("Y")) {
@@ -133,7 +135,7 @@ public class validationMethods {
                     return 0;
                 }
             } catch (NullPointerException npe) {
-                mSetApp.fun.printErrorMessages(errorMessage);
+                PhoneBookAppMethods.printErrorMessages(errorMessage);
             }
         }
         return 2;
