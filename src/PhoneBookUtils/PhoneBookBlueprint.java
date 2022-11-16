@@ -22,20 +22,13 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
 
     public abstract void printPhoneBook(ArrayList<Contact> listOfContacts);
 
-    public abstract ArrayList<Contact> findContact(ArrayList<Contact> listOfContacts, String contactName);
+    // TODO if there is time, use contains to find partial names
+    public abstract ArrayList<Contact> findContact(ArrayList<Contact> listOfContacts, String contactNameOrPhone);
 
-    private Comparator<Contact> compareByName = (Contact o1, Contact o2) -> o1.getName().compareToIgnoreCase(o2.getName());
-    private Comparator<Contact> compareByPhone = Comparator.comparing(Contact::getPhoneNumber);
+    private final Comparator<Contact> compareByName = (Contact o1, Contact o2) -> o1.getName().compareToIgnoreCase(o2.getName());
+    private final Comparator<Contact> compareByPhone = Comparator.comparing(Contact::getPhoneNumber);
 
-    // TODO need to be tested
     public ArrayList<Contact> sortByNameAlphabetically(ArrayList<Contact> listOfContacts){
-//        Collections.sort(listOfContacts, ((o1, o2) -> o1.getName().compareTo(o2.getName())));
-//                listOfContacts, new Comparator<Contact>() {
-//            @Override
-//            public int compare(Contact o1, Contact o2) {
-//                return o1.getName().compareTo(o2.getName());
-//            }
-//        });
         Collections.sort(listOfContacts, compareByName);
         return listOfContacts;
     }
@@ -84,8 +77,8 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
     public ArrayList<Contact> removeDuplicates(ArrayList<Contact> listOfContacts) {
         ArrayList<Contact> duplicatesList = findDuplicates(listOfContacts);
         if (!duplicatesList.isEmpty()) {
-            for (int i = 0; i < duplicatesList.size(); i++) {
-                listOfContacts.remove(duplicatesList.get(i));
+            for (Contact contact : duplicatesList) {
+                listOfContacts.remove(contact);
             }
         }
         return listOfContacts;

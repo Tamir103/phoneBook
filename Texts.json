@@ -1,9 +1,10 @@
 {
     "welcome": "WELCOME TO THE PHONE BOOK MAIN MENU",
     "menuInstructions": "Which action number do you wish to execute?",
+    "emptyList": "Phone book list is empty",
     "invalidInputWarn": "Input is invalid, try again: ",
     "lastInvalidInputWarn": "Last chance",
-    "inputErrMsg": "Due to invalid inputs the app is unable to perform it's designated actions.",
+    "inputErrMsg": "Due to invalid inputs the app is unable to perform its designated actions.",
     "enterContactName": "Enter contact name: ",
     "nameLengthWarn": "Name is limited to 20 characters",
     "enterPhone": "Enter contact phone number: ",
@@ -20,5 +21,6 @@
     "writeToFileErr": "Error in writing to file",
     "fileExist": "File already exist, would you like to write in it? \nEnter Y or N",
     "createRandomFileName": "We assigned a random file name for you, with action date and time",
+    "unsupportedFile": "Phone book file is not in supported format",
     "exit": "Thank you for using the PhoneBook Application - GOODBYE"
 }

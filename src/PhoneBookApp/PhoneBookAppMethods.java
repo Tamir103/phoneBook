@@ -72,23 +72,27 @@ public class PhoneBookAppMethods {
      *                     7 - Max tries
      *                     8 - Contact not in phone book
      *                     9 - Writing to file error
+     *                     10 - Empty phone book list
+     *                     11 - File format unsupported
      */
     public static void printErrorMessages(int messageIndex) {
         switch (messageIndex) {
             case 1 -> System.err.println(myPhoneBook.textsMap.get("invalidInputWarn"));
             case 2 -> System.err.println(myPhoneBook.textsMap.get("nameLengthWarn"));
             case 3 -> System.err.println(myPhoneBook.textsMap.get("phoneFormat"));
-            case 4 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + appTexts.textsMap.get("invalidInputWarn"));
-            case 5 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + appTexts.textsMap.get("nameLengthWarn"));
-            case 6 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + appTexts.textsMap.get("phoneFormat"));
+            case 4 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + myPhoneBook.textsMap.get("invalidInputWarn"));
+            case 5 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + myPhoneBook.textsMap.get("nameLengthWarn"));
+            case 6 -> System.err.println(myPhoneBook.textsMap.get("lastInvalidInputWarn") + " - " + myPhoneBook.textsMap.get("phoneFormat"));
             case 7 -> System.err.println(myPhoneBook.textsMap.get("inputErrMsg"));
             case 8 -> System.err.println(myPhoneBook.textsMap.get("contactNotExist"));
             case 9 -> System.err.println(myPhoneBook.textsMap.get("writeToFileErr"));
+            case 10 -> System.err.println(myPhoneBook.textsMap.get("emptyList"));
+            case 11 -> System.err.println(myPhoneBook.textsMap.get("unsupportedFile"));
         }
     }
 
-    //TODO not DRY enough
-    public static int calculateMessageIndex(int i, boolean isGenericInputErrors, boolean isLengthValid, boolean isNameField) { // TODO delete comments
+    //TODO not a good method - replace if there is time
+    public static int calculateMessageIndex(int i, boolean isGenericInputErrors, boolean isLengthValid, boolean isNameField) {
         if (isGenericInputErrors) {
             return genericInputErrors(i);
         } else if (i == 0) {

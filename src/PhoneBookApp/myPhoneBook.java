@@ -19,7 +19,10 @@ public class myPhoneBook extends PhoneBookBlueprint {
         textsMap = generateTexts();
     }
 
-    //TODO javadoc this
+    /**
+     * Importing texts from json file to a HashMap
+     * @return HashMap containing texts used in the app
+     */
     public static HashMap<String, String> generateTexts(/*String jsonPath*/) {
         try {
             // create Gson instance
@@ -310,42 +313,48 @@ public class myPhoneBook extends PhoneBookBlueprint {
         String rawLine;
         String name = "";
         String phone = "";
-        printTextsFromMap("enterFileName");
-        String fileName = scan.nextLine();
-        if (!fileName.contains(".txt")) {
-            System.err.println("Phone book file is not in supported format");
-            return null;
-        }
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            while ((rawLine = reader.readLine()) != null) {
-                Contact contact = new Contact();
-                for (int i = 0; i < rawLine.length(); i++) {
-                    int charValue = rawLine.charAt(i);
-                    String currentChar = Character.toString((char) charValue);
-                    if (((charValue >= 65 && charValue <= 90) || (charValue >= 97 && charValue <= 122) || charValue == 32)) {
-                        name = name.concat(currentChar);
-                    } else if ((charValue >= 48 && charValue <= 57)) {
-                        phone = phone.concat(currentChar);
-                    }
-                }
+        for (int i = 0; i < 3; i++) {
+            printTextsFromMap("enterFileName");
+            String fileName = scan.nextLine();
+            if (!fileName.contains(".txt")) {
+                PhoneBookAppMethods.printErrorMessages(11);
+            } else {
                 try {
-                    if (!(name.equals("CONTACTS") || name.equals("") || phone.equals(""))) {
-                        name = validationMethods.validateLettersOnly(name);
-                        contact.setName(name);
-                        contact.setPhoneNumber(phone);
-                        importedContactsList = addContact(contact, importedContactsList);
+                    BufferedReader reader = new BufferedReader(new FileReader(fileName));
+                    while ((rawLine = reader.readLine()) != null) {
+                        Contact contact = new Contact();
+                        for (int j = 0; j < rawLine.length(); j++) {
+                            int charValue = rawLine.charAt(j);
+                            String currentChar = Character.toString((char) charValue);
+                            if (((charValue >= 65 && charValue <= 90) || (charValue >= 97 && charValue <= 122) || charValue == 32)) {
+                                name = name.concat(currentChar);
+                            } else if ((charValue >= 48 && charValue <= 57)) {
+                                phone = phone.concat(currentChar);
+                            }
+                        }
+                        try {
+                            if (!(name.equals("CONTACTS") || name.equals("") || phone.equals(""))) {
+                                name = validationMethods.validateLettersOnly(name);
+                                contact.setName(name);
+                                contact.setPhoneNumber(phone);
+                                importedContactsList = addContact(contact, importedContactsList);
+                            }
+                        } catch (NumberFormatException | ArithmeticException e) {
+                            PhoneBookAppMethods.printErrorMessages(11);
+                        }
+                        name = "";
+                        phone = "";
                     }
-                } catch (NumberFormatException  | ArithmeticException e) {
-                    System.err.println("Phone book file is not in supported format");
+                    break;
+                } catch (FileNotFoundException fnfe) {
+                    System.err.println("File Not Found"); //TODO maybe put text in errors map
+                } catch (IOException ioe) {
+                    System.err.println("Error In Reading Phone Book");
                 }
-                name = "";
-                phone = "";
             }
-        } catch (FileNotFoundException fnfe) {
-            System.err.println("File Not Found"); //TODO maybe put text in errors map
-        } catch (IOException ioe) {
-            System.err.println("Error In Reading Phone Book");
+            if (i == 2) {
+                PhoneBookAppMethods.printErrorMessages(7);
+            }
         }
         return importedContactsList;
     }
