@@ -8,8 +8,6 @@ import java.util.Map;
 
 public abstract class PhoneBookBlueprint extends Contact implements Comparable {
 
-//    ArrayList<Contact> contactsList = new ArrayList<>();
-
     public abstract Map<Integer, String> generatePhoneBookMenu();
 
     public abstract ArrayList<Contact> generateContactsList();
@@ -42,7 +40,7 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
      * @param listOfContacts List to be sorted
      * @return List sorted
      */
-    // Does not sort by mathematically the largest number, but by comparing each number character of onr to the same position number character of the other
+    // Does not sort by the mathematically biggest number, but by comparing each number character of one to the same position number character of the other
     public ArrayList<Contact> sortByPhoneBigToSmall(ArrayList<Contact> listOfContacts) {
 //        Collections.sort(listOfContacts, (o1, o2) -> {
 //            int phone1, phone2;

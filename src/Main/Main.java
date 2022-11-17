@@ -19,7 +19,9 @@ public class Main {
         while (!exit) {
             mSetApp.fun.printMenu();
             int menuInput = mSetApp.fun.menuChoice();
-            menuInput = isActionPossibleOnEmptyList(menuInput);
+            if (menuInput != 0) {
+                menuInput = isActionPossibleOnEmptyList(menuInput);
+            }
             switch (menuInput) {
                 case 1 -> addContactManager();
                 case 2 -> removeContactManager();
@@ -68,7 +70,9 @@ public class Main {
     static void addContactManager() {
         Contact contact = mSetApp.myPhoneBook.createContact();
         int listSizeBeforeAdd = mSetApp.contactsList.size();
-        mSetApp.contactsList = mSetApp.myPhoneBook.addContact(contact, mSetApp.contactsList);
+        if (contact != null) {
+            mSetApp.contactsList = mSetApp.myPhoneBook.addContact(contact, mSetApp.contactsList);
+        }
         if (mSetApp.contactsList.size() == (listSizeBeforeAdd + 1)) {
             mSetApp.myPhoneBook.printTextsFromMap("actionSuccess");
         }

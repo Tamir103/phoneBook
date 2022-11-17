@@ -2,8 +2,6 @@ package PhoneBookApp;
 
 import java.util.Map;
 
-
-
 public class PhoneBookAppMethods {
 
     static SetApp mSetApp = SetApp.getInstance();
@@ -51,7 +49,6 @@ public class PhoneBookAppMethods {
             }
             printErrorMessages(calculateMessageIndex(i, true, true, true));
         }
-
         return 0;
     }
 
@@ -136,6 +133,4 @@ public class PhoneBookAppMethods {
         }
         return i;
     }
-
-
 }

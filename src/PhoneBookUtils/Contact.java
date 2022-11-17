@@ -223,6 +223,4 @@ public class Contact {
         }
         return true;
     }
-
-
 }
