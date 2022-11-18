@@ -11,7 +11,7 @@ import java.util.Scanner;
      public Scanner scan;
      public PhoneBookApp.myPhoneBook myPhoneBook;
      public PhoneBookAppMethods fun;
-     public validationMethods validation;
+     public validationMethods validate;
      public Map<Integer, String> menu;
      public ArrayList<Contact> contactsList;
 
@@ -19,10 +19,9 @@ import java.util.Scanner;
          scan = new Scanner(System.in);
          myPhoneBook = new myPhoneBook();
          fun = new PhoneBookAppMethods();
-         validation = new validationMethods();
+         validate = new validationMethods();
          menu = myPhoneBook.generatePhoneBookMenu();
          contactsList = new ArrayList<>();
-         //public final HashMap<String, String> texts = myPhoneBook.
      }
 
      public static SetApp getInstance() {

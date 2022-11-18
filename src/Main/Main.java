@@ -85,7 +85,7 @@ public class Main {
                 String nameOrPhone = mSetApp.scan.nextLine();
                 validationList = mSetApp.myPhoneBook.findContact(mSetApp.contactsList, nameOrPhone);
                 if (!validationList.isEmpty()) {
-                    int yORn = mSetApp.validation.enterAndValidateYorN("removeAll");
+                    int yORn = mSetApp.validate.enterAndValidateYorN("removeAll");
                     if (yORn == 1) {
                         mSetApp.contactsList = mSetApp.myPhoneBook.removeContact(mSetApp.contactsList, nameOrPhone, true);
                         if (mSetApp.fun.isListsSizesEquals(listSize, mSetApp.contactsList.size()) && i != 2) {
@@ -121,7 +121,7 @@ public class Main {
         for (int i = 0; i < 3; i++) {
             mSetApp.myPhoneBook.printTextsFromMap("enterContactName");
             String name = mSetApp.scan.nextLine();
-            if (mSetApp.validation.isOnlyEnglishLetters(name)) {
+            if (mSetApp.validate.isOnlyEnglishLetters(name)) {
                 ArrayList<Contact> contactsFound = mSetApp.myPhoneBook.findContact(mSetApp.contactsList, name);
                 if (!contactsFound.isEmpty()) {
                     mSetApp.myPhoneBook.printPhoneBook(contactsFound);

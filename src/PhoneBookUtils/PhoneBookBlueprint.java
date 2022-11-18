@@ -1,6 +1,5 @@
 package PhoneBookUtils;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,7 +19,6 @@ public abstract class PhoneBookBlueprint extends Contact implements Comparable {
 
     public abstract void printPhoneBook(ArrayList<Contact> listOfContacts);
 
-    // TODO if there is time, use contains to find partial names
     public abstract ArrayList<Contact> findContact(ArrayList<Contact> listOfContacts, String contactNameOrPhone);
 
     private final Comparator<Contact> compareByName = (Contact o1, Contact o2) -> o1.getName().compareToIgnoreCase(o2.getName());
