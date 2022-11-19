@@ -256,6 +256,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
             System.setOut(o);
 
             // printing
+            System.out.println();
             printPhoneBook(listOfContacts);
 
             // Use stored value for output stream
@@ -269,7 +270,12 @@ public class myPhoneBook extends PhoneBookBlueprint {
     }
 
     public String validateFileName(String fileName) {
-        String fileFullName = fileName + ".txt";
+        String fileFullName;
+        if (fileName.contains(".txt")) {
+            fileFullName = fileName;
+        } else {
+            fileFullName = fileName + ".txt";
+        }
         File file = new File(fileFullName);
         if (!file.isFile()) {
             if (fileName.length() <= 15) {
@@ -318,6 +324,7 @@ public class myPhoneBook extends PhoneBookBlueprint {
             String fileName = scan.nextLine();
             if (!fileName.contains(".txt")) {
                 PhoneBookAppMethods.printErrorMessages(11);
+                System.err.println("txt file only");
             } else {
                 try {
                     BufferedReader reader = new BufferedReader(new FileReader(fileName));
